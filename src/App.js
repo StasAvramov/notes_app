@@ -1,14 +1,19 @@
 import React from 'react';
+import { Route, Redirect } from 'react-router-dom';
 
-import 'modern-normalize/modern-normalize.css';
-import './styles/style.css';
-import styles from './App.module.css';
+import Login from './components/Login';
+import Container from '@material-ui/core/Container';
+
+import * as routes from './constants/routes';
 
 function App() {
   return (
-    <div className={styles.container}>
-      <h1 className={styles.header}>Notes App</h1>
-    </div>
+    <Container component="main" maxWidth="sm">
+      <Route path={routes.LOGIN}>
+        <Login />
+      </Route>
+      <Redirect to={routes.LOGIN} />
+    </Container>
   );
 }
 
