@@ -1,10 +1,13 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
-import YUP_SCHEMA from './yup.schema';
 
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { Avatar, Button, TextField, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+
+import YUP_SCHEMA from './yup.schema';
+import authActions from '../../redux/auth/auth.actions';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -32,6 +35,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function SignIn() {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -39,7 +43,9 @@ export default function SignIn() {
     },
     validationSchema: YUP_SCHEMA,
     onSubmit: values => {
-      alert(JSON.stringify(values, null, 2));
+      const { email } = values;
+      const user = { email: email };
+      dispatch(authActions.loginRequest(user));
     },
   });
 
