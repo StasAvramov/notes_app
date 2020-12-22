@@ -1,20 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Route, Redirect } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useAuth } from '../../hooks';
 
 /**
  * - Если маршрут ограниченный, и пользователь залогинен, рендерит редирект на /todos
  * - В противном случае рендерит компонент
  */
 function PublicRoute({ component: Component, redirectTo, ...routeProps }) {
-  const user = useSelector(state => state.user.email);
-  const isAuthenticated = user ? true : false;
+  const IS_AUTHENTICATED = useAuth();
   return (
     <Route
       {...routeProps}
       render={props =>
-        isAuthenticated && routeProps.restricted ? (
+        IS_AUTHENTICATED && routeProps.restricted ? (
           <Redirect to={redirectTo} />
         ) : (
           <Component {...props} />

@@ -1,48 +1,59 @@
 import { put, takeLatest, all } from 'redux-saga/effects';
-import authActions from './auth.actions';
-const {
-  loginRequest,
-  loginSuccess,
-  loginError,
-  currentUserRequest,
-  currentUserSuccess,
-  currentUserError,
-} = authActions;
+import {
+  LOGIN_REQUEST,
+  LOGIN_SUCCESS,
+  // LOGIN_ERROR,
+  LOGOUT_REQUEST,
+  LOGOUT_SUCCESS,
+  // LOGOUT_ERROR,
+  CURRENT_USER_REQUEST,
+  CURRENT_USER_SUCCESS,
+  // CURRENT_USER_ERROR,
+} from './auth.actions';
 
-function* login(action) {
+function* login({ payload }) {
   try {
-    let userData = JSON.stringify(action.payload);
-    localStorage.setItem('user', userData);
+    const USER = JSON.stringify(payload);
+    localStorage.setItem('user', USER);
 
-    yield put(loginSuccess(action.payload));
+    yield put(LOGIN_SUCCESS(payload));
   } catch (error) {
     console.error(error);
-    // yield put(loginError(error));
+    // yield put(LOGIN_ERROR(error));
   }
 }
-function* watchLogin() {
-  yield takeLatest(loginRequest().type, login);
+
+function* logout() {
+  try {
+    localStorage.removeItem('user');
+
+    yield put(LOGOUT_SUCCESS());
+  } catch (error) {
+    console.error(error);
+    // yield put(LOGOUT_ERROR(error));
+  }
 }
 
-function* getCurrentUser(action) {
+function* getCurrentUser() {
   try {
-    let json = localStorage.getItem('user');
-    if (!json) {
-      yield put(currentUserSuccess(null));
+    const USER_AS_JSON = localStorage.getItem('user');
+    if (!USER_AS_JSON) {
+      yield put(CURRENT_USER_SUCCESS(null));
     } else {
-      let userData = JSON.parse(json);
+      const USER = JSON.parse(USER_AS_JSON);
 
-      yield put(currentUserSuccess(userData));
+      yield put(CURRENT_USER_SUCCESS(USER));
     }
   } catch (error) {
     console.error(error);
-    // yield put(currentUserError(error));
+    // yield put(CURRENT_USER_ERROR(error));
   }
 }
-function* watchGetCurrentUser() {
-  yield takeLatest(currentUserRequest().type, getCurrentUser);
-}
 
-export default function* rootSaga() {
-  yield all([watchLogin(), watchGetCurrentUser()]);
+export default function* userSaga() {
+  yield all([
+    yield takeLatest(LOGIN_REQUEST().type, login),
+    yield takeLatest(LOGOUT_REQUEST().type, logout),
+    yield takeLatest(CURRENT_USER_REQUEST().type, getCurrentUser),
+  ]);
 }

@@ -3,18 +3,33 @@ import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import { Avatar, Button, TextField, Typography } from '@material-ui/core';
+import {
+  Avatar,
+  Button,
+  TextField,
+  Typography,
+  Container,
+  Box,
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import YUP_SCHEMA from './yup.schema';
-import authActions from '../../redux/auth/auth.actions';
+import { LOGIN_REQUEST } from '../../redux/auth/auth.actions';
 
 const useStyles = makeStyles(theme => ({
+  container: {
+    boxShadow: theme.shadows[15],
+    height: '100vh',
+    display: 'flex',
+    justifyContent: 'center',
+  },
   paper: {
-    marginTop: theme.spacing(8),
+    height: '100%',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    justifyContent: 'center',
+    maxWidth: theme.breakpoints.values.sm,
   },
   avatar: {
     margin: theme.spacing(1),
@@ -26,14 +41,11 @@ const useStyles = makeStyles(theme => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
-    padding: '12px 16px',
-  },
-  error: {
-    color: theme.palette.error.dark,
+    padding: theme.spacing(1.5, 2),
   },
 }));
 
-export default function SignIn() {
+export default function Login() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const formik = useFormik({
@@ -45,58 +57,60 @@ export default function SignIn() {
     onSubmit: values => {
       const { email } = values;
       const user = { email: email };
-      dispatch(authActions.loginRequest(user));
+      dispatch(LOGIN_REQUEST(user));
     },
   });
 
   return (
-    <div className={classes.paper}>
-      <Avatar className={classes.avatar}>
-        <LockOutlinedIcon />
-      </Avatar>
-      <Typography component="h1" variant="h5">
-        Sign in
-      </Typography>
-      <form className={classes.form} onSubmit={formik.handleSubmit}>
-        <TextField
-          id="email"
-          name="email"
-          type="email"
-          label="Email Address *"
-          variant="outlined"
-          margin="normal"
-          fullWidth
-          autoComplete="true"
-          autoFocus
-          {...formik.getFieldProps('email')}
-        />
-        {formik.touched.email && formik.errors.email ? (
-          <div className={classes.error}>{formik.errors.email}</div>
-        ) : null}
-        <TextField
-          id="password"
-          name="password"
-          type="password"
-          label="Password *"
-          variant="outlined"
-          margin="normal"
-          fullWidth
-          autoComplete="true"
-          {...formik.getFieldProps('password')}
-        />
-        {formik.touched.password && formik.errors.password ? (
-          <div className={classes.error}>{formik.errors.password}</div>
-        ) : null}
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-          className={classes.submit}
-        >
-          Sign In
-        </Button>
-      </form>
-    </div>
+    <Container component="main" maxWidth="md" className={classes.container}>
+      <Box className={classes.paper}>
+        <Avatar className={classes.avatar}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Sign in
+        </Typography>
+        <form className={classes.form} onSubmit={formik.handleSubmit}>
+          <TextField
+            id="email"
+            name="email"
+            type="email"
+            label="Email Address *"
+            variant="outlined"
+            margin="normal"
+            fullWidth
+            autoComplete="true"
+            autoFocus
+            error={formik.touched.email && !!formik.errors.email}
+            helperText={formik.errors.email}
+            {...formik.getFieldProps('email')}
+          />
+
+          <TextField
+            id="password"
+            name="password"
+            type="password"
+            label="Password *"
+            variant="outlined"
+            margin="normal"
+            fullWidth
+            autoComplete="true"
+            error={formik.touched.password && !!formik.errors.password}
+            helperText={formik.errors.password}
+            {...formik.getFieldProps('password')}
+          />
+
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+          >
+            Sign In
+          </Button>
+        </form>
+      </Box>
+    </Container>
   );
 }

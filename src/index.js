@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import App from './App';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
+import './styles/style.css';
 
 import store from './redux/store';
 
