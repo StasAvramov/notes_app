@@ -1,7 +1,29 @@
-import { useSelector } from 'react-redux';
-import { GET_IS_AUTHENTICATED } from '../redux/auth/auth.selectors';
+import { useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  loginRequest,
+  logoutRequest,
+  getCurrentUserRequest,
+} from '../redux/auth/auth.actions';
 
 export default function useAuth() {
-  const IS_AUTHENTICATED = useSelector(GET_IS_AUTHENTICATED);
-  return IS_AUTHENTICATED;
+  const dispatch = useDispatch();
+
+  const isAuthenticated = useSelector(state => !!state.user);
+
+  const onGetCurrentUser = useCallback(
+    () => dispatch(getCurrentUserRequest()),
+    [dispatch],
+  );
+
+  const onLogin = params => dispatch(loginRequest(params));
+
+  const onLogout = useCallback(() => dispatch(logoutRequest()), [dispatch]);
+
+  return {
+    isAuthenticated,
+    onGetCurrentUser,
+    onLogin,
+    onLogout,
+  };
 }

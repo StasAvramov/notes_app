@@ -1,7 +1,6 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import { all, spawn } from 'redux-saga/effects';
 import createSagaMiddleware from 'redux-saga';
-import logger from 'redux-logger';
 
 import { userReducer } from './auth';
 import { notesReducer } from './notes';
@@ -16,7 +15,7 @@ const sagaMiddleware = createSagaMiddleware();
 
 const store = configureStore({
   reducer: { user: userReducer, notes: notesReducer },
-  middleware: [sagaMiddleware, logger, ...getDefaultMiddleware()],
+  middleware: [sagaMiddleware, ...getDefaultMiddleware()],
 });
 
 sagaMiddleware.run(rootSaga);

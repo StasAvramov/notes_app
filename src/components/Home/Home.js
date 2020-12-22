@@ -1,5 +1,5 @@
 import { React, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useAuth, useNotes } from '../../hooks';
 import Notes from '../Notes';
 import {
   Container,
@@ -10,9 +10,6 @@ import {
   Button,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-
-import { LOGOUT_REQUEST } from '../../redux/auth/auth.actions';
-import { GET_NOTES_REQUEST } from '../../redux/notes/notes.actions';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -43,31 +40,31 @@ const useStyles = makeStyles(theme => ({
 
 function Home() {
   const classes = useStyles();
-  const dispatch = useDispatch();
-  const notes = useSelector(state => state.notes);
+  const { onLogout } = useAuth();
+  const { notes, getNotes } = useNotes();
 
   useEffect(() => {
-    if (notes) {
-      return;
+    if (!notes) {
+      getNotes();
     }
-    dispatch(GET_NOTES_REQUEST());
-  }, [dispatch, notes]);
+  }, [notes, getNotes]);
 
-  function onLogout() {
-    dispatch(LOGOUT_REQUEST());
+  function logout() {
+    onLogout();
   }
+
   return (
     <>
       <AppBar position="static" className={classes.header}>
         <Toolbar className={classes.toolbar}>
-          <Button onClick={onLogout} color="inherit">
+          <Button onClick={logout} color="inherit">
             Logout
           </Button>
         </Toolbar>
       </AppBar>
       <Container component="main" maxWidth="md" className={classes.container}>
         <Box className={classes.paper}>
-          <Notes notes={notes} />
+          <Notes />
         </Box>
       </Container>
     </>

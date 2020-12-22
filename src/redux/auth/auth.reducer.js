@@ -1,15 +1,15 @@
 // import { combineReducers } from 'redux';
 import { createReducer } from '@reduxjs/toolkit';
 import {
-  LOGIN_SUCCESS,
-  CURRENT_USER_SUCCESS,
-  LOGOUT_SUCCESS,
+  loginSuccess,
+  getCurrentUserSuccess,
+  logoutSuccess,
 } from './auth.actions';
 
 const userReducer = createReducer(null, {
-  [LOGIN_SUCCESS]: (_, { payload }) => payload,
-  [CURRENT_USER_SUCCESS]: (prevState, { payload }) => payload,
-  [LOGOUT_SUCCESS]: (_, { payload }) => null,
+  [loginSuccess]: (_, { payload }) => payload,
+  [getCurrentUserSuccess]: (prevState, { payload }) => payload,
+  [logoutSuccess]: (_, { payload }) => null,
 });
 
 export default userReducer;

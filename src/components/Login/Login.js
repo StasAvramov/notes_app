@@ -1,6 +1,6 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
+import { useAuth } from '../../hooks';
 
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import {
@@ -14,7 +14,6 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 
 import YUP_SCHEMA from './yup.schema';
-import { LOGIN_REQUEST } from '../../redux/auth/auth.actions';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -47,7 +46,8 @@ const useStyles = makeStyles(theme => ({
 
 export default function Login() {
   const classes = useStyles();
-  const dispatch = useDispatch();
+  const { onLogin } = useAuth();
+
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -57,7 +57,7 @@ export default function Login() {
     onSubmit: values => {
       const { email } = values;
       const user = { email: email };
-      dispatch(LOGIN_REQUEST(user));
+      onLogin(user);
     },
   });
 

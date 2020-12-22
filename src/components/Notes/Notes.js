@@ -1,7 +1,9 @@
 import React from 'react';
+import { useNotes } from '../../hooks';
 import Note from './Note';
 
-export default function Notes({ notes }) {
+export default function Notes() {
+  const { notes } = useNotes();
   return (
     <ul>
       {notes ? (
