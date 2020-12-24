@@ -1,46 +1,42 @@
 import { React, useEffect } from 'react';
-import { useAuth, useNotes } from '../../hooks';
-import Notes from '../Notes';
-import {
-  Container,
-  Box,
-  // Typography,
-  AppBar,
-  Toolbar,
-  Button,
-} from '@material-ui/core';
+import { useNotes } from '../../hooks';
+
+import Header from '../Header';
+import Category from '../Category';
+import AddIcon from '@material-ui/icons/Add';
+
+import { Container, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+
+import Notes from '../Notes';
 
 const useStyles = makeStyles(theme => ({
   container: {
-    boxShadow: theme.shadows[15],
-    height: '100vh',
-    display: 'flex',
-    justifyContent: 'center',
-  },
-  header: {
-    margin: '0 auto',
-    boxShadow: theme.shadows[15],
-    maxWidth: theme.breakpoints.values.md,
-  },
-  toolbar: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-  },
-  paper: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    height: '100vh',
+    flexWrap: 'nowrap',
+    boxShadow: theme.shadows[15],
+    paddingTop: theme.spacing(3),
+    minHeight: '100vh',
   },
-  text: {
-    color: theme.palette.success.main,
+  button: {
+    position: 'fixed',
+    bottom: theme.spacing(0),
+    width: '100%',
+    maxWidth: theme.breakpoints.values.md,
+    margin: theme.spacing(0, 'auto'),
+    borderRadius: theme.spacing(0),
+    padding: theme.spacing(2, 4.75),
+    [theme.breakpoints.up('md')]: {
+      position: 'static',
+      maxWidth: '450px',
+    },
   },
 }));
 
-function Home() {
+export default function Home() {
   const classes = useStyles();
-  const { onLogout } = useAuth();
   const { notes, getNotes } = useNotes();
 
   useEffect(() => {
@@ -49,26 +45,22 @@ function Home() {
     }
   }, [notes, getNotes]);
 
-  function logout() {
-    onLogout();
-  }
-
   return (
     <>
-      <AppBar position="static" className={classes.header}>
-        <Toolbar className={classes.toolbar}>
-          <Button onClick={logout} color="inherit">
-            Logout
-          </Button>
-        </Toolbar>
-      </AppBar>
+      <Header />
       <Container component="main" maxWidth="md" className={classes.container}>
-        <Box className={classes.paper}>
-          <Notes />
-        </Box>
+        <Category />
+        <Notes />
+        <Button
+          variant="contained"
+          color="primary"
+          size="large"
+          className={classes.button}
+          startIcon={<AddIcon fontSize="large" />}
+        >
+          Add note
+        </Button>
       </Container>
     </>
   );
 }
-
-export default Home;
