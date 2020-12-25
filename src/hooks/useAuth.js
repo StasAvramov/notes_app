@@ -11,6 +11,8 @@ export default function useAuth() {
 
   const isAuthenticated = useSelector(state => !!state.user);
 
+  const user = useSelector(state => state.user);
+
   const onGetCurrentUser = useCallback(
     () => dispatch(getCurrentUserRequest()),
     [dispatch],
@@ -25,5 +27,6 @@ export default function useAuth() {
     onGetCurrentUser,
     onLogin,
     onLogout,
+    user,
   };
 }

@@ -1,16 +1,17 @@
 import { put, takeLatest, all } from 'redux-saga/effects';
+
 import {
   getNotesRequest,
   getNotesSuccess,
   // getNotesError,
-  // createNoteRequest,
-  // createNoteSuccess,
+  createNoteRequest,
+  createNoteSuccess,
   // createNoteError,
-  // editNoteRequest,
-  // editNoteSuccess,
+  editNoteRequest,
+  editNoteSuccess,
   // editNoteError,
-  // deleteNoteRequest,
-  // deleteNoteSuccess,
+  deleteNoteRequest,
+  deleteNoteSuccess,
   // deleteNoteError,
 } from './notes.actions';
 
@@ -26,6 +27,54 @@ function* getNotes(action) {
   }
 }
 
+function* addNote(action) {
+  try {
+    const NOTES_AS_JSON = localStorage.getItem('notes');
+    const NOTES = JSON.parse(NOTES_AS_JSON);
+    NOTES.push(action.payload);
+    localStorage.setItem('notes', JSON.stringify(NOTES));
+
+    yield put(createNoteSuccess(action.payload));
+  } catch (error) {
+    console.error(error);
+    // yield put(getNotesError(error));
+  }
+}
+
+function* deleteNote(action) {
+  try {
+    const NOTES_AS_JSON = localStorage.getItem('notes');
+    const NOTES = JSON.parse(NOTES_AS_JSON);
+    const NEW_NOTES = NOTES.filter(note => note.id !== action.payload.id);
+    localStorage.setItem('notes', JSON.stringify(NEW_NOTES));
+
+    yield put(deleteNoteSuccess(action.payload));
+  } catch (error) {
+    console.error(error);
+    // yield put(getNotesError(error));
+  }
+}
+
+function* editNote(action) {
+  try {
+    const NOTES_AS_JSON = localStorage.getItem('notes');
+    const NOTES = JSON.parse(NOTES_AS_JSON);
+    const NEW_NOTES = NOTES.filter(note => note.id !== action.payload.id);
+    NEW_NOTES.push(action.payload);
+    localStorage.setItem('notes', JSON.stringify(NEW_NOTES));
+
+    yield put(editNoteSuccess(action.payload));
+  } catch (error) {
+    console.error(error);
+    // yield put(getNotesError(error));
+  }
+}
+
 export default function* notesSaga() {
-  yield all([yield takeLatest(getNotesRequest().type, getNotes)]);
+  yield all([
+    yield takeLatest(getNotesRequest().type, getNotes),
+    yield takeLatest(createNoteRequest().type, addNote),
+    yield takeLatest(deleteNoteRequest().type, deleteNote),
+    yield takeLatest(editNoteRequest().type, editNote),
+  ]);
 }

@@ -1,4 +1,5 @@
-import { React, useEffect } from 'react';
+import { React, useEffect, forwardRef } from 'react';
+import { Link } from 'react-router-dom';
 import { useNotes } from '../../hooks';
 
 import Header from '../Header';
@@ -9,6 +10,7 @@ import { Container, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Notes from '../Notes';
+import { NOTE_CREATE } from '../../constants/routes';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -35,6 +37,10 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const LinkBehavior = forwardRef((props, ref) => (
+  <Link ref={ref} to={NOTE_CREATE} {...props} />
+));
+
 export default function Home() {
   const classes = useStyles();
   const { notes, getNotes } = useNotes();
@@ -52,6 +58,7 @@ export default function Home() {
         <Category />
         <Notes />
         <Button
+          component={LinkBehavior}
           variant="contained"
           color="primary"
           size="large"

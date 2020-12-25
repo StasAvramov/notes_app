@@ -1,4 +1,6 @@
-import { React, useState } from 'react';
+import { React, useState, forwardRef } from 'react';
+import { Link } from 'react-router-dom';
+import { useNotes } from '../../../hooks';
 
 import {
   Collapse,
@@ -9,14 +11,10 @@ import {
   CardContent,
   Typography,
   Chip,
+  Button,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  ExpandMore,
-  DeleteForever,
-  Edit,
-  Fullscreen,
-} from '@material-ui/icons';
+import { ExpandMore } from '@material-ui/icons';
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -57,8 +55,11 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const ButtonAsLink = forwardRef((props, ref) => <Link ref={ref} {...props} />);
+
 export default function Note({ note }) {
   const classes = useStyles();
+  const { onDeleteNote } = useNotes();
   const [expanded, setExpanded] = useState(false);
 
   const handleExpandClick = () => {
@@ -99,15 +100,32 @@ export default function Note({ note }) {
         </CardContent>
 
         <CardActions disableSpacing className={classes.actions}>
-          <IconButton aria-label="delete note">
-            <DeleteForever color="primary" />
-          </IconButton>
-          <IconButton aria-label="edit note">
-            <Edit color="primary" />
-          </IconButton>
-          <IconButton aria-label="full view note">
-            <Fullscreen color="primary" />
-          </IconButton>
+          <Button
+            onClick={() => onDeleteNote(note.id)}
+            variant="contained"
+            color="primary"
+            size="large"
+          >
+            Delete
+          </Button>
+          <Button
+            component={ButtonAsLink}
+            variant="contained"
+            color="primary"
+            size="large"
+            to={`/note/edit/${note.id}`}
+          >
+            Edit
+          </Button>
+          <Button
+            component={ButtonAsLink}
+            variant="contained"
+            color="primary"
+            size="large"
+            to={`/note/${note.id}`}
+          >
+            View
+          </Button>
         </CardActions>
       </Collapse>
     </Card>
