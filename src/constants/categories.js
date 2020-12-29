@@ -1,1 +1,1 @@
-export const CATEGORIES = ['Home', 'Work', 'Vacation', 'Hobbie'];
+export const CATEGORIES = ['home', 'work', 'vacation', 'hobbie'];

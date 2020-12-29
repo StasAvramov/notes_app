@@ -1,6 +1,6 @@
 import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { useNotes, useAuth } from '../../hooks';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -33,18 +33,18 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function AddNote() {
+export default function ViewNote() {
   const classes = useStyles();
   const history = useHistory();
-  const { onAddNote } = useNotes();
-  const { user } = useAuth();
+  const { id } = useParams();
+  const { onEditNote, notes } = useNotes();
+  const note = notes.find(note => note.id === Number(id));
 
-  function createNote(params) {
+  function editNote(noteToEdit, newFields) {
     return {
-      ...params,
-      id: uuidv4(),
-      createdAt: new Date().toLocaleString(),
-      updatedAt: '',
+      ...noteToEdit,
+      ...newFields,
+      updatedAt: new Date().toLocaleString(),
     };
   }
 
@@ -54,17 +54,16 @@ export default function AddNote() {
 
   const formik = useFormik({
     initialValues: {
-      title: '',
-      description: '',
-      category: '',
+      title: note.title,
+      description: note.description,
+      category: note.category,
     },
     onSubmit: values => {
-      const newNote = createNote({ ...values, userEmail: user.email });
-      onAddNote(newNote);
+      const updatedNote = editNote(note, values);
+      onEditNote(updatedNote);
       history.replace('/notes');
     },
   });
-
   return (
     <Box className={classes.paper}>
       <Typography component="h1" variant="h5">
@@ -89,7 +88,7 @@ export default function AddNote() {
           name="category"
           select
           fullWidth
-          label="Category"
+          label="Select category"
           helperText="Please select category"
           required
           {...formik.getFieldProps('category')}

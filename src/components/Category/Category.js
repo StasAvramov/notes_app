@@ -1,4 +1,5 @@
-import React from 'react';
+import { React, forwardRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { InputLabel, Select, FormControl, MenuItem } from '@material-ui/core';
@@ -11,15 +12,17 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     maxWidth: '450px',
   },
-  selectEmpty: {
+  select: {
     marginTop: theme.spacing(2),
     textAlign: 'center',
   },
 }));
 
+// const AsLink = forwardRef((props, ref) => <Link ref={ref} {...props} />);
+
 export default function Category() {
   const classes = useStyles();
-  const [category, setCategory] = React.useState('');
+  const [category, setCategory] = useState('');
 
   const handleChange = event => {
     setCategory(event.target.value);
@@ -36,13 +39,18 @@ export default function Category() {
         value={category}
         onChange={handleChange}
         displayEmpty
-        className={classes.selectEmpty}
+        className={classes.select}
       >
-        <MenuItem value="">
+        <MenuItem value="" to={'/notes'} component={Link}>
           <em>Sort by Category</em>
         </MenuItem>
         {CATEGORIES.map(ctgr => (
-          <MenuItem key={ctgr} value={ctgr}>
+          <MenuItem
+            key={ctgr}
+            value={ctgr}
+            to={`/notes/${ctgr}`}
+            component={Link}
+          >
             {ctgr}
           </MenuItem>
         ))}

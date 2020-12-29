@@ -1,10 +1,11 @@
 import React from 'react';
-import { useNotes } from '../../hooks';
-
-import Note from './Note';
+import { useParams } from 'react-router-dom';
 
 import { Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+
+import { useNotes } from '../../hooks';
+import Note from './Note';
 
 const useStyles = makeStyles(theme => ({
   list: {
@@ -25,12 +26,15 @@ const useStyles = makeStyles(theme => ({
 
 export default function Notes() {
   const classes = useStyles();
-  const { notes } = useNotes();
+  let { notes, getSortedNotes } = useNotes();
+  const { category } = useParams();
+
+  let sortedNotes = getSortedNotes(notes, category);
 
   return (
     <Box component="ul" className={classes.list}>
-      {notes ? (
-        notes.map(note => <Note key={note.id} note={note} />)
+      {sortedNotes ? (
+        sortedNotes.map(note => <Note key={note.id} note={note} />)
       ) : (
         <div>Loading...</div>
       )}

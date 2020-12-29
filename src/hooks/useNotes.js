@@ -13,6 +13,13 @@ export default function useNotes() {
 
   const notes = useSelector(state => state.notes);
 
+  const getSortedNotes = (notes, category) => {
+    if (!category) {
+      return notes;
+    }
+    return notes.filter(note => note.category.toLowerCase() === category);
+  };
+
   const getNotes = useCallback(() => dispatch(getNotesRequest()), [dispatch]);
 
   const onAddNote = params => dispatch(createNoteRequest(params));
@@ -27,5 +34,6 @@ export default function useNotes() {
     onAddNote,
     onDeleteNote,
     onEditNote,
+    getSortedNotes,
   };
 }

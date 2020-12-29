@@ -7,7 +7,11 @@ import { useAuth } from '../../hooks';
  * - Если маршрут приватный и пользователь залогинен, рендерит компонент
  * - В противном случае рендерит Redirect на redirectTo
  */
-function PrivateRoute({ component: Component, redirectTo, ...routeProps }) {
+export default function PrivateRoute({
+  component: Component,
+  redirectTo,
+  ...routeProps
+}) {
   const { isAuthenticated } = useAuth();
   return (
     <Route
@@ -27,5 +31,3 @@ PrivateRoute.propTypes = {
   component: PropTypes.elementType.isRequired,
   redirectTo: PropTypes.string.isRequired,
 };
-
-export default PrivateRoute;

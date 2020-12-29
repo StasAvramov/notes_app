@@ -14,9 +14,13 @@ const notesReducer = createReducer(null, {
   [deleteNoteSuccess]: (state, { payload }) =>
     state.filter(el => el.id !== payload.id),
   [editNoteSuccess]: (state, { payload }) => {
-    let filteredState = state.filter(note => note.id !== payload.id);
-    filteredState.push(payload);
-    return filteredState;
+    let noteToEdit = state.find(note => note.id === payload.id);
+    let noteToEditIndex = state.indexOf(noteToEdit);
+    state[noteToEditIndex] = {
+      ...noteToEdit,
+      ...payload,
+    };
+    return state;
   },
   [logoutSuccess]: (_, { payload }) => null,
 });

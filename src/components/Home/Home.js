@@ -2,15 +2,14 @@ import { React, useEffect, forwardRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useNotes } from '../../hooks';
 
-import Header from '../Header';
 import Category from '../Category';
 import AddIcon from '@material-ui/icons/Add';
 
-import { Container, Button } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Notes from '../Notes';
-import { NOTE_CREATE } from '../../constants/routes';
+import { ROUTES } from '../../constants/routes';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -38,7 +37,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const LinkBehavior = forwardRef((props, ref) => (
-  <Link ref={ref} to={NOTE_CREATE} {...props} />
+  <Link ref={ref} to={ROUTES.add} {...props} />
 ));
 
 export default function Home() {
@@ -53,21 +52,21 @@ export default function Home() {
 
   return (
     <>
-      <Header />
-      <Container component="main" maxWidth="md" className={classes.container}>
-        <Category />
-        <Notes />
-        <Button
-          component={LinkBehavior}
-          variant="contained"
-          color="primary"
-          size="large"
-          className={classes.button}
-          startIcon={<AddIcon fontSize="large" />}
-        >
-          Add note
-        </Button>
-      </Container>
+      {/* <Header /> */}
+      {/* <Container component="main" maxWidth="md" className={classes.container}> */}
+      <Category />
+      <Notes />
+      <Button
+        component={LinkBehavior}
+        variant="contained"
+        color="primary"
+        size="large"
+        className={classes.button}
+        startIcon={<AddIcon fontSize="large" />}
+      >
+        Add note
+      </Button>
+      {/* </Container> */}
     </>
   );
 }

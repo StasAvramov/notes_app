@@ -59,9 +59,15 @@ function* editNote(action) {
   try {
     const NOTES_AS_JSON = localStorage.getItem('notes');
     const NOTES = JSON.parse(NOTES_AS_JSON);
-    const NEW_NOTES = NOTES.filter(note => note.id !== action.payload.id);
-    NEW_NOTES.push(action.payload);
-    localStorage.setItem('notes', JSON.stringify(NEW_NOTES));
+
+    let noteToEdit = NOTES.find(note => note.id === action.payload.id);
+    let noteToEditIndex = NOTES.indexOf(noteToEdit);
+    NOTES[noteToEditIndex] = {
+      ...noteToEdit,
+      ...action.payload,
+    };
+
+    localStorage.setItem('notes', JSON.stringify(NOTES));
 
     yield put(editNoteSuccess(action.payload));
   } catch (error) {
