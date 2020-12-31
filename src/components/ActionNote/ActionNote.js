@@ -1,74 +1,68 @@
-import React from 'react';
-import { v4 as uuidv4 } from 'uuid';
-import { useHistory } from 'react-router-dom';
-import { useFormik } from 'formik';
+import { React, useEffect } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
 import { useNotes, useAuth } from '../../hooks';
-import MenuItem from '@material-ui/core/MenuItem';
-import { Button, TextField, Typography, Box } from '@material-ui/core';
+import { useFormik } from 'formik';
+
+import { MenuItem, TextField, Typography, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+
+import { Buttons } from '../../components';
+
+import { ROUTES } from '../../constants/routes';
 import { CATEGORIES } from '../../constants/categories';
 
 const useStyles = makeStyles(theme => ({
-  container: {
-    boxShadow: theme.shadows[15],
-  },
-  paper: {
+  wrapper: {
     height: '100%',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     maxWidth: theme.breakpoints.values.sm,
   },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
   form: {
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-    padding: theme.spacing(1.5, 2),
   },
 }));
 
 export default function AddNote() {
   const classes = useStyles();
   const history = useHistory();
-  const { onAddNote } = useNotes();
   const { user } = useAuth();
+  const { id } = useParams();
+  const { onAddNote, onEditNote, getNote } = useNotes();
+  const note = getNote(id);
 
-  function createNote(params) {
-    return {
-      ...params,
-      id: uuidv4(),
-      createdAt: new Date().toLocaleString(),
-      updatedAt: '',
-    };
-  }
-
-  function onCancel() {
-    history.replace('/notes');
-  }
+  useEffect(() => {
+    if (!id) {
+      return;
+    }
+    if (!note) {
+      history.replace(ROUTES.home);
+    }
+  }, [note, history, id]);
 
   const formik = useFormik({
     initialValues: {
-      title: '',
-      description: '',
-      category: '',
+      title: note ? note.title : '',
+      description: note ? note.description : '',
+      category: note ? note.category : '',
     },
     onSubmit: values => {
-      const newNote = createNote({ ...values, userEmail: user.email });
-      onAddNote(newNote);
+      if (!id) {
+        onAddNote({ ...values, userEmail: user.email });
+      } else {
+        onEditNote({ id: note.id, ...values });
+      }
+
       history.replace('/notes');
     },
   });
 
   return (
-    <Box className={classes.paper}>
+    <Box className={classes.wrapper}>
       <Typography component="h1" variant="h5">
-        Add note
+        {id ? 'Edit note' : 'Add note'}
       </Typography>
       <form className={classes.form} onSubmit={formik.handleSubmit}>
         <TextField
@@ -79,14 +73,12 @@ export default function AddNote() {
           variant="outlined"
           margin="normal"
           fullWidth
-          autoFocus
           required
           {...formik.getFieldProps('title')}
         />
 
         <TextField
           id="category"
-          name="category"
           select
           fullWidth
           label="Category"
@@ -114,25 +106,7 @@ export default function AddNote() {
           required
           {...formik.getFieldProps('description')}
         />
-        <Box>
-          <Button
-            type="button"
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            onClick={onCancel}
-          >
-            Cancel
-          </Button>
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Add note
-          </Button>
-        </Box>
+        <Buttons />
       </form>
     </Box>
   );

@@ -1,4 +1,4 @@
-import { put, takeLatest, all } from 'redux-saga/effects';
+import { put, takeLatest, all, call } from 'redux-saga/effects';
 
 import {
   getNotesRequest,
@@ -14,11 +14,20 @@ import {
   deleteNoteSuccess,
   // deleteNoteError,
 } from './notes.actions';
+import {
+  createNote,
+  getNoteToUpdateIndex,
+  updateNote,
+} from '../../services/notes.service';
+
+function getNotesFromLocalStorageAsJS() {
+  const NOTES_AS_JSON = localStorage.getItem('notes');
+  return JSON.parse(NOTES_AS_JSON);
+}
 
 function* getNotes(action) {
   try {
-    const NOTES_AS_JSON = localStorage.getItem('notes');
-    const NOTES = JSON.parse(NOTES_AS_JSON);
+    const NOTES = yield call(getNotesFromLocalStorageAsJS);
 
     yield put(getNotesSuccess(NOTES));
   } catch (error) {
@@ -29,26 +38,14 @@ function* getNotes(action) {
 
 function* addNote(action) {
   try {
-    const NOTES_AS_JSON = localStorage.getItem('notes');
-    const NOTES = JSON.parse(NOTES_AS_JSON);
-    NOTES.push(action.payload);
+    const NOTES = yield call(getNotesFromLocalStorageAsJS);
+
+    const NEW_NOTE = yield call(createNote, action.payload);
+
+    NOTES.push(NEW_NOTE);
     localStorage.setItem('notes', JSON.stringify(NOTES));
 
-    yield put(createNoteSuccess(action.payload));
-  } catch (error) {
-    console.error(error);
-    // yield put(getNotesError(error));
-  }
-}
-
-function* deleteNote(action) {
-  try {
-    const NOTES_AS_JSON = localStorage.getItem('notes');
-    const NOTES = JSON.parse(NOTES_AS_JSON);
-    const NEW_NOTES = NOTES.filter(note => note.id !== action.payload.id);
-    localStorage.setItem('notes', JSON.stringify(NEW_NOTES));
-
-    yield put(deleteNoteSuccess(action.payload));
+    yield put(createNoteSuccess(NEW_NOTE));
   } catch (error) {
     console.error(error);
     // yield put(getNotesError(error));
@@ -57,19 +54,31 @@ function* deleteNote(action) {
 
 function* editNote(action) {
   try {
-    const NOTES_AS_JSON = localStorage.getItem('notes');
-    const NOTES = JSON.parse(NOTES_AS_JSON);
+    const { id, ...fieldsToUpdate } = action.payload;
 
-    let noteToEdit = NOTES.find(note => note.id === action.payload.id);
-    let noteToEditIndex = NOTES.indexOf(noteToEdit);
-    NOTES[noteToEditIndex] = {
-      ...noteToEdit,
-      ...action.payload,
-    };
+    const NOTES = yield call(getNotesFromLocalStorageAsJS);
+
+    let noteToUpdateIndex = yield call(getNoteToUpdateIndex, NOTES, id);
+
+    yield call(updateNote, NOTES, noteToUpdateIndex, fieldsToUpdate);
 
     localStorage.setItem('notes', JSON.stringify(NOTES));
 
-    yield put(editNoteSuccess(action.payload));
+    yield put(editNoteSuccess(NOTES[noteToUpdateIndex]));
+  } catch (error) {
+    console.error(error);
+    // yield put(getNotesError(error));
+  }
+}
+
+function* deleteNote(action) {
+  try {
+    const NOTES = yield call(getNotesFromLocalStorageAsJS);
+
+    const NEW_NOTES = NOTES.filter(note => note.id !== action.payload.id);
+    localStorage.setItem('notes', JSON.stringify(NEW_NOTES));
+
+    yield put(deleteNoteSuccess(action.payload));
   } catch (error) {
     console.error(error);
     // yield put(getNotesError(error));

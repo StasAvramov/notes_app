@@ -1,9 +1,12 @@
 import React from 'react';
-import { useAuth } from '../../hooks';
-import { useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+
 import { AppBar, Toolbar, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import NotesIcon from '@material-ui/icons/Notes';
+
+import { useAuth } from '../../hooks';
+import { ROUTES } from '../../constants/routes';
 
 const useStyles = makeStyles(theme => ({
   header: {
@@ -19,19 +22,19 @@ const useStyles = makeStyles(theme => ({
 export default function Header() {
   const classes = useStyles();
   const { onLogout } = useAuth();
-  const history = useHistory();
   function logout() {
     onLogout();
-  }
-
-  function onClickLogo() {
-    history.replace('/notes');
   }
 
   return (
     <AppBar position="sticky" className={classes.header}>
       <Toolbar className={classes.toolbar}>
-        <Button color="inherit" onClick={onClickLogo} startIcon={<NotesIcon />}>
+        <Button
+          component={Link}
+          to={ROUTES.home}
+          color="inherit"
+          startIcon={<NotesIcon />}
+        >
           My Notes
         </Button>
         <Button onClick={logout} color="inherit">

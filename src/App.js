@@ -1,8 +1,8 @@
 import { React, useEffect } from 'react';
-import { Redirect, Switch } from 'react-router-dom';
+import { Redirect, Switch, useLocation } from 'react-router-dom';
 import { useAuth, useNotes } from './hooks';
 
-import { Login, Content } from './components';
+import { Login, Header, Home, ActionNote, ViewNote } from './components';
 import { PrivateRoute, PublicRoute } from './components/common';
 
 import { Container } from '@material-ui/core';
@@ -13,6 +13,9 @@ import { NOTES } from './notes';
 function App() {
   const { isAuthenticated, getCurrentUser } = useAuth();
   const { notes, getNotes } = useNotes();
+
+  const location = useLocation();
+  let isLoginPage = location.pathname === ROUTES.login;
 
   useEffect(() => {
     getCurrentUser();
@@ -30,6 +33,7 @@ function App() {
 
   return (
     <Container maxWidth="md">
+      {!isLoginPage && <Header />}
       <Switch>
         <PublicRoute
           exact
@@ -40,17 +44,23 @@ function App() {
         />
         <PrivateRoute
           exact
-          path={[
-            ROUTES.home,
-            ROUTES.details,
-            ROUTES.category,
-            ROUTES.add,
-            ROUTES.edit,
-          ]}
-          component={Content}
+          path={[ROUTES.home, ROUTES.category]}
+          component={Home}
           redirectTo={ROUTES.login}
         />
-        <Redirect to={ROUTES.login} />
+        <PrivateRoute
+          exact
+          path={[ROUTES.add, ROUTES.edit]}
+          component={ActionNote}
+          redirectTo={ROUTES.login}
+        />
+        <PrivateRoute
+          exact
+          path={ROUTES.details}
+          component={ViewNote}
+          redirectTo={ROUTES.login}
+        />
+        <Redirect to={ROUTES.home} />
       </Switch>
     </Container>
   );

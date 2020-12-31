@@ -4,8 +4,9 @@ import { useParams } from 'react-router-dom';
 import { Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { useNotes } from '../../hooks';
 import Note from './Note';
+
+import { useNotes } from '../../hooks';
 
 const useStyles = makeStyles(theme => ({
   list: {

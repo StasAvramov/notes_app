@@ -1,6 +1,5 @@
-import { React, useState, forwardRef } from 'react';
+import { React, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useNotes } from '../../../hooks';
 
 import {
   Collapse,
@@ -15,6 +14,9 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { ExpandMore } from '@material-ui/icons';
+
+import { useNotes } from '../../../hooks';
+import { ROUTES } from '../../../constants/routes';
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -55,8 +57,6 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const ButtonAsLink = forwardRef((props, ref) => <Link ref={ref} {...props} />);
-
 export default function Note({ note }) {
   const classes = useStyles();
   const { onDeleteNote } = useNotes();
@@ -90,7 +90,11 @@ export default function Note({ note }) {
           </IconButton>
         }
         title={note.title}
-        subheader={`Created: ${note.createdAt}`}
+        subheader={
+          note.updatedAt
+            ? `Updated: ${note.updatedAt}`
+            : `Created: ${note.createdAt}`
+        }
       />
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
@@ -101,30 +105,30 @@ export default function Note({ note }) {
 
         <CardActions disableSpacing className={classes.actions}>
           <Button
-            onClick={() => onDeleteNote(note.id)}
+            component={Link}
             variant="contained"
             color="primary"
             size="large"
-          >
-            Delete
-          </Button>
-          <Button
-            component={ButtonAsLink}
-            variant="contained"
-            color="primary"
-            size="large"
-            to={`/note/edit/${note.id}`}
+            to={ROUTES.dynamic.edit(note.id)}
           >
             Edit
           </Button>
           <Button
-            component={ButtonAsLink}
+            component={Link}
             variant="contained"
             color="primary"
             size="large"
-            to={`/note/${note.id}`}
+            to={ROUTES.dynamic.details(note.id)}
           >
             View
+          </Button>
+          <Button
+            onClick={() => onDeleteNote(note.id)}
+            variant="contained"
+            color="secondary"
+            size="large"
+          >
+            Delete
           </Button>
         </CardActions>
       </Collapse>

@@ -5,4 +5,9 @@ export const ROUTES = {
   details: '/note/:id',
   add: '/note/add',
   edit: '/note/edit/:id',
+  dynamic: {
+    edit: id => `/note/edit/${id}`,
+    category: category => `/notes/${category}`,
+    details: id => `/note/${id}`,
+  },
 };

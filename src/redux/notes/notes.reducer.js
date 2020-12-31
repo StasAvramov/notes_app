@@ -10,9 +10,12 @@ import { logoutSuccess } from '../auth/auth.actions';
 
 const notesReducer = createReducer(null, {
   [getNotesSuccess]: (_, { payload }) => payload,
+
   [createNoteSuccess]: (state, { payload }) => [...state, payload],
+
   [deleteNoteSuccess]: (state, { payload }) =>
     state.filter(el => el.id !== payload.id),
+
   [editNoteSuccess]: (state, { payload }) => {
     let noteToEdit = state.find(note => note.id === payload.id);
     let noteToEditIndex = state.indexOf(noteToEdit);
@@ -22,6 +25,7 @@ const notesReducer = createReducer(null, {
     };
     return state;
   },
+
   [logoutSuccess]: (_, { payload }) => null,
 });
 

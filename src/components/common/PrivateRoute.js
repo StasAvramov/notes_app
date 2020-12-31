@@ -9,6 +9,7 @@ import { useAuth } from '../../hooks';
  */
 export default function PrivateRoute({
   component: Component,
+  children,
   redirectTo,
   ...routeProps
 }) {
@@ -20,7 +21,12 @@ export default function PrivateRoute({
         isAuthenticated ? (
           <Component {...props} />
         ) : (
-          <Redirect to={redirectTo} />
+          <Redirect
+            to={{
+              pathname: redirectTo,
+              state: { from: props.location.pathname },
+            }}
+          />
         )
       }
     />

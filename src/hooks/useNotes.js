@@ -13,6 +13,8 @@ export default function useNotes() {
 
   const notes = useSelector(state => state.notes);
 
+  const getNote = noteId => notes.find(note => note.id === Number(noteId));
+
   const getSortedNotes = (notes, category) => {
     if (!category) {
       return notes;
@@ -24,12 +26,13 @@ export default function useNotes() {
 
   const onAddNote = params => dispatch(createNoteRequest(params));
 
-  const onEditNote = updatedNote => dispatch(editNoteRequest(updatedNote));
+  const onEditNote = payload => dispatch(editNoteRequest(payload));
 
   const onDeleteNote = noteId => dispatch(deleteNoteRequest({ id: noteId }));
 
   return {
     notes,
+    getNote,
     getNotes,
     onAddNote,
     onDeleteNote,
