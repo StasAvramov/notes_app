@@ -1,4 +1,4 @@
-import React from 'react';
+import { React } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { Box } from '@material-ui/core';
@@ -27,10 +27,10 @@ const useStyles = makeStyles(theme => ({
 
 export default function Notes() {
   const classes = useStyles();
-  let { notes, getSortedNotes } = useNotes();
   const { category } = useParams();
 
-  let sortedNotes = getSortedNotes(notes, category);
+  let { getSortedNotes } = useNotes();
+  let sortedNotes = getSortedNotes(category);
 
   return (
     <Box component="ul" className={classes.list}>

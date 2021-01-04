@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import { React } from 'react';
 import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 
@@ -22,18 +22,10 @@ const useStyles = makeStyles(theme => ({
 
 export default function Category() {
   const classes = useStyles();
-  // const [category, setCategory] = useState('');
-
-  // const handleChange = event => {
-  //   setCategory(event.target.value);
-  // };
 
   const formik = useFormik({
     initialValues: {
       category: '',
-    },
-    onSubmit: values => {
-      // history.replace('/notes');
     },
   });
 

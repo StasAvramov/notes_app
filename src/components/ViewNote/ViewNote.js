@@ -5,7 +5,6 @@ import { Paper, Typography, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { Buttons } from '../../components';
-
 import { useNotes } from '../../hooks';
 
 const useStyles = makeStyles(theme => ({
@@ -25,8 +24,8 @@ const useStyles = makeStyles(theme => ({
 export default function ViewNote() {
   const classes = useStyles();
   const { id } = useParams();
-  const { getNote } = useNotes();
-  const note = getNote(id);
+  const { getNoteById } = useNotes();
+  const note = getNoteById(id);
 
   return (
     <Box className={classes.container}>

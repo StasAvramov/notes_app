@@ -13,8 +13,8 @@ import { NOTES } from './notes';
 function App() {
   const { isAuthenticated, getCurrentUser } = useAuth();
   const { notes, getNotes } = useNotes();
-
   const location = useLocation();
+
   let isLoginPage = location.pathname === ROUTES.login;
 
   useEffect(() => {

@@ -22,9 +22,9 @@ const useStyles = makeStyles(theme => ({
 export default function Header() {
   const classes = useStyles();
   const { onLogout } = useAuth();
-  function logout() {
-    onLogout();
-  }
+  // function logout() {
+  //   onLogout();
+  // }
 
   return (
     <AppBar position="sticky" className={classes.header}>
@@ -37,7 +37,7 @@ export default function Header() {
         >
           My Notes
         </Button>
-        <Button onClick={logout} color="inherit">
+        <Button onClick={() => onLogout()} color="inherit">
           Logout
         </Button>
       </Toolbar>

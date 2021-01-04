@@ -13,9 +13,9 @@ export default function useNotes() {
 
   const notes = useSelector(state => state.notes);
 
-  const getNote = noteId => notes.find(note => note.id === Number(noteId));
+  const getNoteById = noteId => notes.find(note => note.id === Number(noteId));
 
-  const getSortedNotes = (notes, category) => {
+  const getSortedNotes = category => {
     if (!category) {
       return notes;
     }
@@ -32,7 +32,7 @@ export default function useNotes() {
 
   return {
     notes,
-    getNote,
+    getNoteById,
     getNotes,
     onAddNote,
     onDeleteNote,

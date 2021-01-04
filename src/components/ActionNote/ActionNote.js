@@ -1,6 +1,5 @@
 import { React, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { useNotes, useAuth } from '../../hooks';
 import { useFormik } from 'formik';
 
 import { MenuItem, TextField, Typography, Box } from '@material-ui/core';
@@ -8,6 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import { Buttons } from '../../components';
 
+import { useNotes, useAuth } from '../../hooks';
 import { ROUTES } from '../../constants/routes';
 import { CATEGORIES } from '../../constants/categories';
 
@@ -28,10 +28,11 @@ const useStyles = makeStyles(theme => ({
 export default function AddNote() {
   const classes = useStyles();
   const history = useHistory();
-  const { user } = useAuth();
   const { id } = useParams();
-  const { onAddNote, onEditNote, getNote } = useNotes();
-  const note = getNote(id);
+
+  const { user } = useAuth();
+  const { onAddNote, onEditNote, getNoteById } = useNotes();
+  const note = getNoteById(id);
 
   useEffect(() => {
     if (!id) {
@@ -40,7 +41,7 @@ export default function AddNote() {
     if (!note) {
       history.replace(ROUTES.home);
     }
-  }, [note, history, id]);
+  }, [history, id, note]);
 
   const formik = useFormik({
     initialValues: {
