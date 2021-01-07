@@ -1,43 +1,68 @@
 import { React, useEffect } from 'react';
-import { Redirect, Switch } from 'react-router-dom';
-import { useAuth } from './hooks';
+import { Redirect, Switch, useLocation } from 'react-router-dom';
+import { useAuth, useNotes } from './hooks';
 
-import { Login, Home } from './components';
+import { Login, Header, Home, ActionNote, ViewNote } from './components';
 import { PrivateRoute, PublicRoute } from './components/common';
 
-import * as routes from './constants/routes';
+import { Container } from '@material-ui/core';
+
+import { ROUTES } from './constants/routes';
 import { NOTES } from './notes';
 
 function App() {
-  const { isAuthenticated, onGetCurrentUser } = useAuth();
+  const { isAuthenticated, getCurrentUser } = useAuth();
+  const { notes, getNotes } = useNotes();
+  const location = useLocation();
+
+  let isLoginPage = location.pathname === ROUTES.login;
 
   useEffect(() => {
-    onGetCurrentUser();
-  }, [onGetCurrentUser]);
+    getCurrentUser();
+    getNotes();
+  }, [getCurrentUser, getNotes]);
 
   useEffect(() => {
     if (isAuthenticated) {
+      if (notes) {
+        return;
+      }
       localStorage.setItem('notes', JSON.stringify(NOTES));
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, notes]);
 
   return (
-    <Switch>
-      <PrivateRoute
-        exact
-        path={routes.HOME}
-        component={Home}
-        redirectTo={routes.LOGIN}
-      />
-      <PublicRoute
-        exact
-        restricted
-        path={routes.LOGIN}
-        redirectTo={routes.HOME}
-        component={Login}
-      />
-      <Redirect to={routes.LOGIN} />
-    </Switch>
+    <Container maxWidth="md">
+      {!isLoginPage && <Header />}
+      <Switch>
+        <PublicRoute
+          exact
+          restricted
+          path={ROUTES.login}
+          component={Login}
+          redirectTo={ROUTES.home}
+        />
+        <PrivateRoute
+          exact
+          path={[ROUTES.home, ROUTES.category]}
+          component={Home}
+          redirectTo={ROUTES.login}
+        />
+        <PrivateRoute
+          exact
+          path={[ROUTES.add, ROUTES.edit]}
+          component={ActionNote}
+          redirectTo={ROUTES.login}
+        />
+        <PrivateRoute
+          exact
+          path={ROUTES.details}
+          component={ViewNote}
+          redirectTo={ROUTES.login}
+        />
+        <Redirect to={ROUTES.home} />
+      </Switch>
+    </Container>
   );
 }
 

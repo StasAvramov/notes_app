@@ -9,12 +9,19 @@ import { useAuth } from '../../hooks';
  */
 function PublicRoute({ component: Component, redirectTo, ...routeProps }) {
   const { isAuthenticated } = useAuth();
+
   return (
     <Route
       {...routeProps}
       render={props =>
         isAuthenticated && routeProps.restricted ? (
-          <Redirect to={redirectTo} />
+          <Redirect
+            to={
+              routeProps.location.state
+                ? routeProps.location.state.from
+                : redirectTo
+            }
+          />
         ) : (
           <Component {...props} />
         )

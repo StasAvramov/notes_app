@@ -11,10 +11,11 @@ export default function useAuth() {
 
   const isAuthenticated = useSelector(state => !!state.user);
 
-  const onGetCurrentUser = useCallback(
-    () => dispatch(getCurrentUserRequest()),
-    [dispatch],
-  );
+  const user = useSelector(state => state.user);
+
+  const getCurrentUser = useCallback(() => dispatch(getCurrentUserRequest()), [
+    dispatch,
+  ]);
 
   const onLogin = params => dispatch(loginRequest(params));
 
@@ -22,8 +23,9 @@ export default function useAuth() {
 
   return {
     isAuthenticated,
-    onGetCurrentUser,
+    getCurrentUser,
     onLogin,
     onLogout,
+    user,
   };
 }
