@@ -9,16 +9,18 @@ import { useAuth } from '../../hooks';
  */
 export default function PrivateRoute({
   component: Component,
-  children,
   redirectTo,
   ...routeProps
 }) {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isAuthReady } = useAuth();
+
   return (
     <Route
       {...routeProps}
       render={props =>
-        isAuthenticated ? (
+        !isAuthReady ? (
+          <div>Loading</div>
+        ) : isAuthenticated ? (
           <Component {...props} />
         ) : (
           <Redirect

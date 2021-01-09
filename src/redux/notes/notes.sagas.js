@@ -14,14 +14,24 @@ import {
   deleteNoteSuccess,
   // deleteNoteError,
 } from './notes.actions';
+
 import {
   createNote,
   getNoteToUpdateIndex,
   updateNote,
 } from '../../services/notes.service';
 
+import { DEFAULT_NOTES } from '../../notes';
+
 function getNotesFromLocalStorageAsJS() {
   const NOTES_AS_JSON = localStorage.getItem('notes');
+
+  if (!NOTES_AS_JSON) {
+    localStorage.setItem('notes', JSON.stringify(DEFAULT_NOTES));
+
+    return DEFAULT_NOTES;
+  }
+
   return JSON.parse(NOTES_AS_JSON);
 }
 
@@ -58,7 +68,7 @@ function* editNote(action) {
 
     const NOTES = yield call(getNotesFromLocalStorageAsJS);
 
-    let noteToUpdateIndex = yield call(getNoteToUpdateIndex, NOTES, id);
+    const noteToUpdateIndex = yield call(getNoteToUpdateIndex, NOTES, id);
 
     yield call(updateNote, NOTES, noteToUpdateIndex, fieldsToUpdate);
 

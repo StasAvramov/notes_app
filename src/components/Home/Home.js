@@ -1,4 +1,4 @@
-import { React, useEffect, forwardRef } from 'react';
+import { React } from 'react';
 import { Link } from 'react-router-dom';
 import { useNotes } from '../../hooks';
 
@@ -36,28 +36,17 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const LinkBehavior = forwardRef((props, ref) => (
-  <Link ref={ref} to={ROUTES.add} {...props} />
-));
-
 export default function Home() {
   const classes = useStyles();
-  const { notes, getNotes } = useNotes();
-
-  useEffect(() => {
-    if (!notes) {
-      getNotes();
-    }
-  }, [notes, getNotes]);
+  const { isNotesLoaded } = useNotes();
 
   return (
     <>
-      {/* <Header /> */}
-      {/* <Container component="main" maxWidth="md" className={classes.container}> */}
       <Category />
-      <Notes />
+      {isNotesLoaded ? <Notes /> : <div>Loading...</div>}
       <Button
-        component={LinkBehavior}
+        component={Link}
+        to={ROUTES.add}
         variant="contained"
         color="primary"
         size="large"
@@ -66,7 +55,6 @@ export default function Home() {
       >
         Add note
       </Button>
-      {/* </Container> */}
     </>
   );
 }

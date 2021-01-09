@@ -1,4 +1,4 @@
-export const NOTES = [
+export const DEFAULT_NOTES = [
   {
     id: 1,
     title: 'note 1',

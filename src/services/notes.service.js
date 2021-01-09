@@ -10,7 +10,7 @@ export function createNote(params) {
 }
 
 export function getNoteToUpdateIndex(allNotes, id) {
-  let noteToEdit = allNotes.find(note => note.id === id);
+  const noteToEdit = allNotes.find(note => note.id === id);
 
   return allNotes.indexOf(noteToEdit);
 }

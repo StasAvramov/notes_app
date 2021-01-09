@@ -1,15 +1,20 @@
-import { createReducer } from '@reduxjs/toolkit';
+import { combineReducers, createReducer } from '@reduxjs/toolkit';
 
 import {
+  getNotesRequest,
   getNotesSuccess,
+  getNotesError,
   createNoteSuccess,
   editNoteSuccess,
   deleteNoteSuccess,
 } from './notes.actions';
+
 import { logoutSuccess } from '../auth/auth.actions';
 
-const notesReducer = createReducer(null, {
-  [getNotesSuccess]: (_, { payload }) => payload,
+const notesArrayReducer = createReducer(null, {
+  [getNotesSuccess]: (_, { payload }) => {
+    return !payload ? [] : payload;
+  },
 
   [createNoteSuccess]: (state, { payload }) => [...state, payload],
 
@@ -27,6 +32,17 @@ const notesReducer = createReducer(null, {
   },
 
   [logoutSuccess]: (_, { payload }) => null,
+});
+
+const isNotesLoading = createReducer(false, {
+  [getNotesRequest]: (_, { payload }) => true,
+  [getNotesSuccess]: (_, { payload }) => true,
+  [logoutSuccess]: (_, { payload }) => false,
+});
+
+const notesReducer = combineReducers({
+  notes: notesArrayReducer,
+  loading: isNotesLoading,
 });
 
 export default notesReducer;

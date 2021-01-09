@@ -1,5 +1,5 @@
 import { React } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useFormik } from 'formik';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -22,10 +22,14 @@ const useStyles = makeStyles(theme => ({
 
 export default function Category() {
   const classes = useStyles();
+  const { category } = useParams();
 
+  const capitalize = s => {
+    return s ? s.charAt(0).toUpperCase() + s.slice(1) : '';
+  };
   const formik = useFormik({
     initialValues: {
-      category: '',
+      category: capitalize(category),
     },
   });
 

@@ -8,28 +8,25 @@ import { PrivateRoute, PublicRoute } from './components/common';
 import { Container } from '@material-ui/core';
 
 import { ROUTES } from './constants/routes';
-import { NOTES } from './notes';
 
 function App() {
   const { isAuthenticated, getCurrentUser } = useAuth();
   const { notes, getNotes } = useNotes();
   const location = useLocation();
 
-  let isLoginPage = location.pathname === ROUTES.login;
+  const isLoginPage = location.pathname === ROUTES.login;
 
   useEffect(() => {
-    getCurrentUser();
-    getNotes();
-  }, [getCurrentUser, getNotes]);
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      if (notes) {
-        return;
-      }
-      localStorage.setItem('notes', JSON.stringify(NOTES));
+    if (!isAuthenticated) {
+      getCurrentUser();
     }
-  }, [isAuthenticated, notes]);
+  }, [isAuthenticated, getCurrentUser]);
+
+  useEffect(() => {
+    if (isAuthenticated && !notes) {
+      getNotes();
+    }
+  }, [isAuthenticated, notes, getNotes]);
 
   return (
     <Container maxWidth="md">

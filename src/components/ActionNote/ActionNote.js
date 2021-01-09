@@ -1,4 +1,4 @@
-import { React, useEffect } from 'react';
+import { React, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { useFormik } from 'formik';
 
@@ -32,16 +32,18 @@ export default function AddNote() {
 
   const { user } = useAuth();
   const { onAddNote, onEditNote, getNoteById } = useNotes();
-  const note = getNoteById(id);
+  const [note, setNote] = useState(null);
+  // const note = getNoteById(id);
 
   useEffect(() => {
     if (!id) {
       return;
     }
+    setNote(getNoteById(id));
     if (!note) {
       history.replace(ROUTES.home);
     }
-  }, [history, id, note]);
+  }, [history, id, note, getNoteById]);
 
   const formik = useFormik({
     initialValues: {

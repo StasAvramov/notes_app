@@ -11,7 +11,9 @@ import {
 export default function useNotes() {
   const dispatch = useDispatch();
 
-  const notes = useSelector(state => state.notes);
+  const notes = useSelector(state => state.data.notes);
+
+  const isNotesLoaded = useSelector(state => state.data.loading);
 
   const getNoteById = noteId => notes.find(note => note.id === Number(noteId));
 
@@ -32,6 +34,7 @@ export default function useNotes() {
 
   return {
     notes,
+    isNotesLoaded,
     getNoteById,
     getNotes,
     onAddNote,
