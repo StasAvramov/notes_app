@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Route, Redirect } from 'react-router-dom';
-import { useAuth } from '../../hooks';
+
+import CustomLoader from './CustomLoader';
+import { useAuth, useNotes } from '../../hooks';
 
 /**
  * - Если маршрут приватный и пользователь залогинен, рендерит компонент
@@ -13,22 +15,25 @@ export default function PrivateRoute({
   ...routeProps
 }) {
   const { isAuthenticated, isAuthReady } = useAuth();
+  const { isNotesReady } = useNotes();
 
   return (
     <Route
       {...routeProps}
       render={props =>
         !isAuthReady ? (
-          <div>Loading</div>
-        ) : isAuthenticated ? (
-          <Component {...props} />
-        ) : (
+          <CustomLoader />
+        ) : !isAuthenticated ? (
           <Redirect
             to={{
               pathname: redirectTo,
               state: { from: props.location.pathname },
             }}
           />
+        ) : !isNotesReady ? (
+          <CustomLoader />
+        ) : (
+          <Component {...props} />
         )
       }
     />

@@ -31,19 +31,21 @@ export default function AddNote() {
   const { id } = useParams();
 
   const { user } = useAuth();
-  const { onAddNote, onEditNote, getNoteById } = useNotes();
-  const [note, setNote] = useState(null);
-  // const note = getNoteById(id);
+  const { onAddNote, onEditNote, getNoteById, isNotesReady } = useNotes();
+  // const [note, setNote] = useState(getNoteById(id));
+  const note = getNoteById(id);
 
   useEffect(() => {
     if (!id) {
       return;
     }
-    setNote(getNoteById(id));
+    if (!isNotesReady) {
+      return;
+    }
     if (!note) {
       history.replace(ROUTES.home);
     }
-  }, [history, id, note, getNoteById]);
+  }, [history, id, note, isNotesReady, getNoteById]);
 
   const formik = useFormik({
     initialValues: {
@@ -55,6 +57,13 @@ export default function AddNote() {
       if (!id) {
         onAddNote({ ...values, userEmail: user.email });
       } else {
+        if (
+          note.category === values.category &&
+          note.title === values.title &&
+          note.description === values.description
+        ) {
+          return;
+        }
         onEditNote({ id: note.id, ...values });
       }
 
@@ -85,7 +94,6 @@ export default function AddNote() {
           select
           fullWidth
           label="Category"
-          helperText="Please select category"
           required
           {...formik.getFieldProps('category')}
         >
@@ -99,7 +107,7 @@ export default function AddNote() {
           id="description"
           name="description"
           type="text"
-          label="description"
+          label="Description"
           variant="outlined"
           margin="normal"
           multiline

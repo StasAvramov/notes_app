@@ -38,12 +38,12 @@ const useStyles = makeStyles(theme => ({
 
 export default function Home() {
   const classes = useStyles();
-  const { isNotesLoaded } = useNotes();
+  const { isNotesReady } = useNotes();
 
   return (
     <>
       <Category />
-      {isNotesLoaded ? <Notes /> : <div>Loading...</div>}
+      {isNotesReady ? <Notes /> : <div>Loading...</div>}
       <Button
         component={Link}
         to={ROUTES.add}

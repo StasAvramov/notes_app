@@ -36,7 +36,7 @@ export default function Category() {
   return (
     <FormControl className={classes.formControl}>
       <InputLabel shrink id="category">
-        Category
+        Select category
       </InputLabel>
       <Select
         labelId="category"
@@ -46,7 +46,7 @@ export default function Category() {
         {...formik.getFieldProps('category')}
       >
         <MenuItem value="" to={ROUTES.home} component={Link}>
-          <em>Sort by Category</em>
+          All
         </MenuItem>
         {CATEGORIES.map(ctgr => (
           <MenuItem

@@ -5,8 +5,11 @@ import {
   getNotesSuccess,
   getNotesError,
   createNoteSuccess,
+  createNoteError,
   editNoteSuccess,
+  editNoteError,
   deleteNoteSuccess,
+  deleteNoteError,
 } from './notes.actions';
 
 import { logoutSuccess } from '../auth/auth.actions';
@@ -34,15 +37,23 @@ const notesArrayReducer = createReducer(null, {
   [logoutSuccess]: (_, { payload }) => null,
 });
 
-const isNotesLoading = createReducer(false, {
-  [getNotesRequest]: (_, { payload }) => true,
+const isNotesReady = createReducer(false, {
   [getNotesSuccess]: (_, { payload }) => true,
   [logoutSuccess]: (_, { payload }) => false,
 });
 
+const notesErrorReducer = createReducer(null, {
+  [getNotesError]: (_, { payload }) => payload,
+  [createNoteError]: (_, { payload }) => payload,
+  [editNoteError]: (_, { payload }) => payload,
+  [deleteNoteError]: (_, { payload }) => payload,
+  [logoutSuccess]: (_, { payload }) => null,
+});
+
 const notesReducer = combineReducers({
   notes: notesArrayReducer,
-  loading: isNotesLoading,
+  isNotesReady,
+  error: notesErrorReducer,
 });
 
 export default notesReducer;
