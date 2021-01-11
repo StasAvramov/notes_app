@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Route, Redirect } from 'react-router-dom';
+
+import CustomLoader from './CustomLoader';
 import { useAuth } from '../../hooks';
 
 /**
@@ -9,24 +11,26 @@ import { useAuth } from '../../hooks';
  */
 export default function PrivateRoute({
   component: Component,
-  children,
   redirectTo,
   ...routeProps
 }) {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isAuthReady } = useAuth();
+
   return (
     <Route
       {...routeProps}
       render={props =>
-        isAuthenticated ? (
-          <Component {...props} />
-        ) : (
+        !isAuthReady ? (
+          <CustomLoader />
+        ) : !isAuthenticated ? (
           <Redirect
             to={{
               pathname: redirectTo,
               state: { from: props.location.pathname },
             }}
           />
+        ) : (
+          <Component {...props} />
         )
       }
     />

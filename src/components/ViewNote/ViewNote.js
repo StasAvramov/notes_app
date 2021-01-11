@@ -1,11 +1,13 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import { React, useEffect, useState } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
 
 import { Paper, Typography, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { Buttons } from '../../components';
+import { CustomLoader } from '../common';
 import { useNotes } from '../../hooks';
+import { ROUTES } from '../../constants/routes';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -24,19 +26,36 @@ const useStyles = makeStyles(theme => ({
 export default function ViewNote() {
   const classes = useStyles();
   const { id } = useParams();
-  const { getNoteById } = useNotes();
-  const note = getNoteById(id);
+  const { getNoteById, isNotesReady, getNotes } = useNotes();
+  const history = useHistory();
+  const [note, setNote] = useState(null);
+
+  useEffect(() => {
+    if (!isNotesReady) {
+      return getNotes();
+    }
+    if (getNoteById(id)) {
+      return setNote(getNoteById(id));
+    }
+    history.replace(ROUTES.home);
+  }, [id, history, getNoteById, isNotesReady]);
 
   return (
-    <Box className={classes.container}>
-      <Paper elevation={3} className={classes.paper}>
-        <Typography component="h1" variant="h3">
-          {note.title}
-        </Typography>
-        <Typography component="p">Category: {note.category}</Typography>
-        <Typography>{note.description}</Typography>
-        <Buttons />
-      </Paper>
-    </Box>
+    <>
+      {!note ? (
+        <CustomLoader />
+      ) : (
+        <Box className={classes.container}>
+          <Paper elevation={3} className={classes.paper}>
+            <Typography component="h1" variant="h3">
+              {note.title}
+            </Typography>
+            <Typography component="p">Category: {note.category}</Typography>
+            <Typography>{note.description}</Typography>
+            <Buttons />
+          </Paper>
+        </Box>
+      )}
+    </>
   );
 }

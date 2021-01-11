@@ -1,6 +1,6 @@
-import { React, useEffect, forwardRef } from 'react';
+import { React, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useNotes } from '../../hooks';
+import { useAuth, useNotes } from '../../hooks';
 
 import Category from '../Category';
 import AddIcon from '@material-ui/icons/Add';
@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import Notes from '../Notes';
 import { ROUTES } from '../../constants/routes';
+import { CustomLoader } from '../common';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -36,28 +37,24 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const LinkBehavior = forwardRef((props, ref) => (
-  <Link ref={ref} to={ROUTES.add} {...props} />
-));
-
 export default function Home() {
   const classes = useStyles();
-  const { notes, getNotes } = useNotes();
+  const { isAuthenticated } = useAuth();
+  const { isNotesReady, getNotes } = useNotes();
 
   useEffect(() => {
-    if (!notes) {
+    if (isAuthenticated && !isNotesReady) {
       getNotes();
     }
-  }, [notes, getNotes]);
+  }, [isAuthenticated, getNotes]);
 
   return (
     <>
-      {/* <Header /> */}
-      {/* <Container component="main" maxWidth="md" className={classes.container}> */}
       <Category />
-      <Notes />
+      {isNotesReady ? <Notes /> : <CustomLoader />}
       <Button
-        component={LinkBehavior}
+        component={Link}
+        to={ROUTES.add}
         variant="contained"
         color="primary"
         size="large"
@@ -66,7 +63,6 @@ export default function Home() {
       >
         Add note
       </Button>
-      {/* </Container> */}
     </>
   );
 }

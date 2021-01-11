@@ -2,13 +2,13 @@ import { put, takeLatest, all } from 'redux-saga/effects';
 import {
   loginRequest,
   loginSuccess,
-  // loginError,
+  loginError,
   logoutRequest,
   logoutSuccess,
-  // logoutError,
+  logoutError,
   getCurrentUserRequest,
   getCurrentUserSuccess,
-  // getCurrentUserError,
+  getCurrentUserError,
 } from './auth.actions';
 
 function* login({ payload }) {
@@ -18,8 +18,7 @@ function* login({ payload }) {
 
     yield put(loginSuccess(payload));
   } catch (error) {
-    console.error(error);
-    // yield put(LOGIN_ERROR(error));
+    yield put(loginError(error));
   }
 }
 
@@ -30,8 +29,7 @@ function* logout() {
 
     yield put(logoutSuccess());
   } catch (error) {
-    console.error(error);
-    // yield put(LOGOUT_ERROR(error));
+    yield put(logoutError(error));
   }
 }
 
@@ -46,8 +44,7 @@ function* getCurrentUser() {
       yield put(getCurrentUserSuccess(user));
     }
   } catch (error) {
-    console.error(error);
-    // yield put(CURRENT_USER_ERROR(error));
+    yield put(getCurrentUserError(error));
   }
 }
 

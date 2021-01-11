@@ -14,7 +14,7 @@ function* rootSaga() {
 const sagaMiddleware = createSagaMiddleware();
 
 const store = configureStore({
-  reducer: { user: userReducer, notes: notesReducer },
+  reducer: { auth: userReducer, data: notesReducer },
   middleware: [sagaMiddleware, ...getDefaultMiddleware()],
 });
 
