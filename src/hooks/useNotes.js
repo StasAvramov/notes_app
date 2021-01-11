@@ -11,9 +11,11 @@ import {
 export default function useNotes() {
   const dispatch = useDispatch();
 
-  const notes = useSelector(state => state.notes);
+  const notes = useSelector(state => state.data.notes);
 
-  const getNoteById = noteId => notes.find(note => note.id === Number(noteId));
+  const isNotesReady = useSelector(state => state.data.isNotesReady);
+
+  const getNoteById = noteId => notes.find(note => note.id === noteId);
 
   const getSortedNotes = category => {
     if (!category) {
@@ -32,6 +34,7 @@ export default function useNotes() {
 
   return {
     notes,
+    isNotesReady,
     getNoteById,
     getNotes,
     onAddNote,

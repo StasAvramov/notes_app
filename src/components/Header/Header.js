@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import { AppBar, Toolbar, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -22,9 +22,7 @@ const useStyles = makeStyles(theme => ({
 export default function Header() {
   const classes = useStyles();
   const { onLogout } = useAuth();
-  // function logout() {
-  //   onLogout();
-  // }
+  const history = useHistory();
 
   return (
     <AppBar position="sticky" className={classes.header}>
@@ -37,7 +35,13 @@ export default function Header() {
         >
           My Notes
         </Button>
-        <Button onClick={() => onLogout()} color="inherit">
+        <Button
+          onClick={() => {
+            history.replace(ROUTES.home);
+            onLogout();
+          }}
+          color="inherit"
+        >
           Logout
         </Button>
       </Toolbar>

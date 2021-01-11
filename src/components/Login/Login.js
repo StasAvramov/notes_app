@@ -11,12 +11,6 @@ import { useAuth } from '../../hooks';
 import YUP_SCHEMA from './yup.schema';
 
 const useStyles = makeStyles(theme => ({
-  // container: {
-  //   boxShadow: theme.shadows[15],
-  //   height: '100vh',
-  //   display: 'flex',
-  //   justifyContent: 'center',
-  // },
   paper: {
     height: '100%',
     display: 'flex',

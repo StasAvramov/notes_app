@@ -1,4 +1,4 @@
-import { React, useEffect } from 'react';
+import { React, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { useFormik } from 'formik';
 
@@ -31,17 +31,30 @@ export default function AddNote() {
   const { id } = useParams();
 
   const { user } = useAuth();
-  const { onAddNote, onEditNote, getNoteById } = useNotes();
-  const note = getNoteById(id);
+  const {
+    onAddNote,
+    onEditNote,
+    getNoteById,
+    isNotesReady,
+    getNotes,
+  } = useNotes();
+  const [note, setNote] = useState(null);
 
   useEffect(() => {
     if (!id) {
       return;
     }
-    if (!note) {
-      history.replace(ROUTES.home);
+
+    if (!isNotesReady) {
+      return getNotes();
     }
-  }, [history, id, note]);
+
+    if (getNoteById(id)) {
+      return setNote(getNoteById(id));
+    }
+
+    history.replace(ROUTES.home);
+  }, [history, id, note, isNotesReady, getNoteById, getNotes]);
 
   const formik = useFormik({
     initialValues: {
@@ -49,10 +62,19 @@ export default function AddNote() {
       description: note ? note.description : '',
       category: note ? note.category : '',
     },
+    enableReinitialize: true,
     onSubmit: values => {
       if (!id) {
         onAddNote({ ...values, userEmail: user.email });
       } else {
+        if (
+          note.category === values.category &&
+          note.title === values.title &&
+          note.description === values.description
+        ) {
+          alert('There is no changes to save!');
+          return;
+        }
         onEditNote({ id: note.id, ...values });
       }
 
@@ -83,7 +105,6 @@ export default function AddNote() {
           select
           fullWidth
           label="Category"
-          helperText="Please select category"
           required
           {...formik.getFieldProps('category')}
         >
@@ -97,7 +118,7 @@ export default function AddNote() {
           id="description"
           name="description"
           type="text"
-          label="description"
+          label="Description"
           variant="outlined"
           margin="normal"
           multiline

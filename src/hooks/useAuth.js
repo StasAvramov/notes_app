@@ -9,9 +9,10 @@ import {
 export default function useAuth() {
   const dispatch = useDispatch();
 
-  const isAuthenticated = useSelector(state => !!state.user);
+  const isAuthenticated = useSelector(state => !!state.auth.user);
+  const isAuthReady = useSelector(state => state.auth.isAuthReady);
 
-  const user = useSelector(state => state.user);
+  const user = useSelector(state => state.auth.user);
 
   const getCurrentUser = useCallback(() => dispatch(getCurrentUserRequest()), [
     dispatch,
@@ -23,6 +24,7 @@ export default function useAuth() {
 
   return {
     isAuthenticated,
+    isAuthReady,
     getCurrentUser,
     onLogin,
     onLogout,

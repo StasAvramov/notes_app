@@ -1,6 +1,6 @@
-export const NOTES = [
+export const DEFAULT_NOTES = [
   {
-    id: 1,
+    id: '1',
     title: 'note 1',
     userEmail: 'zaqzaq@gmail.com',
     category: 'Home',
@@ -10,7 +10,7 @@ export const NOTES = [
     updatedAt: null,
   },
   {
-    id: 2,
+    id: '2',
     title: 'note 2',
     userEmail: 'zaqzaq@gmail.com',
     category: 'Work',
@@ -19,7 +19,7 @@ export const NOTES = [
     updatedAt: null,
   },
   {
-    id: 3,
+    id: '3',
     title: 'note 3',
     userEmail: 'zaqzaq@gmail.com',
     category: 'Vacation',
@@ -28,7 +28,7 @@ export const NOTES = [
     updatedAt: null,
   },
   {
-    id: 4,
+    id: '4',
     title: 'note 4',
     userEmail: 'zaqzaq@gmail.com',
     category: 'Hobbie',
@@ -37,7 +37,7 @@ export const NOTES = [
     updatedAt: null,
   },
   {
-    id: 5,
+    id: '5',
     title: 'note 5',
     userEmail: 'zaqzaq@gmail.com',
     category: 'Home',
@@ -46,7 +46,7 @@ export const NOTES = [
     updatedAt: null,
   },
   {
-    id: 6,
+    id: '6',
     title: 'note 6',
     userEmail: 'zaqzaq@gmail.com',
     category: 'Vacation',
@@ -55,7 +55,7 @@ export const NOTES = [
     updatedAt: null,
   },
   {
-    id: 7,
+    id: '7',
     title: 'note 7',
     userEmail: 'zaqzaq@gmail.com',
     category: 'Work',
@@ -64,7 +64,7 @@ export const NOTES = [
     updatedAt: null,
   },
   {
-    id: 8,
+    id: '8',
     title: 'note 8',
     userEmail: 'zaqzaq@gmail.com',
     category: 'Home',
@@ -73,7 +73,7 @@ export const NOTES = [
     updatedAt: null,
   },
   {
-    id: 9,
+    id: '9',
     title: 'note 9',
     userEmail: 'zaqzaq@gmail.com',
     category: 'Hobbie',
@@ -82,7 +82,7 @@ export const NOTES = [
     updatedAt: null,
   },
   {
-    id: 10,
+    id: '10',
     title: 'note 10',
     userEmail: 'zaqzaq@gmail.com',
     category: 'Work',

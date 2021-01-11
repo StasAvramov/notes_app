@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
 import App from './App';
+import { ErrorBoundary } from './components/common';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
 import './styles/style.css';
@@ -15,7 +16,9 @@ ReactDOM.render(
     <Provider store={store}>
       <BrowserRouter>
         <CssBaseline />
-        <App />
+        <ErrorBoundary>
+          <App />
+        </ErrorBoundary>
       </BrowserRouter>
     </Provider>
   </React.StrictMode>,

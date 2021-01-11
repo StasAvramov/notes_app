@@ -7,7 +7,11 @@ import { useAuth } from '../../hooks';
  * - Если маршрут ограниченный, и пользователь залогинен, рендерит редирект на /todos
  * - В противном случае рендерит компонент
  */
-function PublicRoute({ component: Component, redirectTo, ...routeProps }) {
+export default function PublicRoute({
+  component: Component,
+  redirectTo,
+  ...routeProps
+}) {
   const { isAuthenticated } = useAuth();
 
   return (
@@ -34,5 +38,3 @@ PublicRoute.propTypes = {
   component: PropTypes.elementType.isRequired,
   redirectTo: PropTypes.string,
 };
-
-export default PublicRoute;
