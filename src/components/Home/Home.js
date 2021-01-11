@@ -1,6 +1,6 @@
-import { React } from 'react';
+import { React, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useNotes } from '../../hooks';
+import { useAuth, useNotes } from '../../hooks';
 
 import Category from '../Category';
 import AddIcon from '@material-ui/icons/Add';
@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import Notes from '../Notes';
 import { ROUTES } from '../../constants/routes';
+import { CustomLoader } from '../common';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -38,12 +39,19 @@ const useStyles = makeStyles(theme => ({
 
 export default function Home() {
   const classes = useStyles();
-  const { isNotesReady } = useNotes();
+  const { isAuthenticated } = useAuth();
+  const { isNotesReady, getNotes } = useNotes();
+
+  useEffect(() => {
+    if (isAuthenticated && !isNotesReady) {
+      getNotes();
+    }
+  }, [isAuthenticated, getNotes]);
 
   return (
     <>
       <Category />
-      {isNotesReady ? <Notes /> : <div>Loading...</div>}
+      {isNotesReady ? <Notes /> : <CustomLoader />}
       <Button
         component={Link}
         to={ROUTES.add}

@@ -1,11 +1,13 @@
 import { React, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 
 import { Paper, Typography, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { Buttons } from '../../components';
+import { CustomLoader } from '../common';
 import { useNotes } from '../../hooks';
+import { ROUTES } from '../../constants/routes';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -24,18 +26,24 @@ const useStyles = makeStyles(theme => ({
 export default function ViewNote() {
   const classes = useStyles();
   const { id } = useParams();
-  const { getNoteById } = useNotes();
-  // const note = getNoteById(id);
+  const { getNoteById, isNotesReady, getNotes } = useNotes();
+  const history = useHistory();
   const [note, setNote] = useState(null);
 
   useEffect(() => {
-    setNote(getNoteById(id));
-  }, [id, getNoteById]);
+    if (!isNotesReady) {
+      return getNotes();
+    }
+    if (getNoteById(id)) {
+      return setNote(getNoteById(id));
+    }
+    history.replace(ROUTES.home);
+  }, [id, history, getNoteById, isNotesReady]);
 
   return (
     <>
       {!note ? (
-        <div>Loading...</div>
+        <CustomLoader />
       ) : (
         <Box className={classes.container}>
           <Paper elevation={3} className={classes.paper}>

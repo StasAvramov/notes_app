@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Route, Redirect } from 'react-router-dom';
 
 import CustomLoader from './CustomLoader';
-import { useAuth, useNotes } from '../../hooks';
+import { useAuth } from '../../hooks';
 
 /**
  * - Если маршрут приватный и пользователь залогинен, рендерит компонент
@@ -15,7 +15,6 @@ export default function PrivateRoute({
   ...routeProps
 }) {
   const { isAuthenticated, isAuthReady } = useAuth();
-  const { isNotesReady } = useNotes();
 
   return (
     <Route
@@ -30,8 +29,6 @@ export default function PrivateRoute({
               state: { from: props.location.pathname },
             }}
           />
-        ) : !isNotesReady ? (
-          <CustomLoader />
         ) : (
           <Component {...props} />
         )

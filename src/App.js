@@ -11,7 +11,7 @@ import { ROUTES } from './constants/routes';
 
 function App() {
   const { isAuthenticated, getCurrentUser } = useAuth();
-  const { notes, getNotes } = useNotes();
+  const { notes, getNotes, isNotesReady } = useNotes();
   const location = useLocation();
 
   const isLoginPage = location.pathname === ROUTES.login;
@@ -21,12 +21,6 @@ function App() {
       getCurrentUser();
     }
   }, [isAuthenticated, getCurrentUser]);
-
-  useEffect(() => {
-    if (isAuthenticated && !notes) {
-      getNotes();
-    }
-  }, [isAuthenticated, notes, getNotes]);
 
   return (
     <Container maxWidth="md">

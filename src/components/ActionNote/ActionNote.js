@@ -31,21 +31,30 @@ export default function AddNote() {
   const { id } = useParams();
 
   const { user } = useAuth();
-  const { onAddNote, onEditNote, getNoteById, isNotesReady } = useNotes();
-  // const [note, setNote] = useState(getNoteById(id));
-  const note = getNoteById(id);
+  const {
+    onAddNote,
+    onEditNote,
+    getNoteById,
+    isNotesReady,
+    getNotes,
+  } = useNotes();
+  const [note, setNote] = useState(null);
 
   useEffect(() => {
     if (!id) {
       return;
     }
+
     if (!isNotesReady) {
-      return;
+      return getNotes();
     }
-    if (!note) {
-      history.replace(ROUTES.home);
+
+    if (getNoteById(id)) {
+      return setNote(getNoteById(id));
     }
-  }, [history, id, note, isNotesReady, getNoteById]);
+
+    history.replace(ROUTES.home);
+  }, [history, id, note, isNotesReady, getNoteById, getNotes]);
 
   const formik = useFormik({
     initialValues: {
@@ -53,6 +62,7 @@ export default function AddNote() {
       description: note ? note.description : '',
       category: note ? note.category : '',
     },
+    enableReinitialize: true,
     onSubmit: values => {
       if (!id) {
         onAddNote({ ...values, userEmail: user.email });
@@ -62,6 +72,7 @@ export default function AddNote() {
           note.title === values.title &&
           note.description === values.description
         ) {
+          alert('There is no changes to save!');
           return;
         }
         onEditNote({ id: note.id, ...values });
