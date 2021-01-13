@@ -1,4 +1,6 @@
-export const DEFAULT_NOTES = [
+import { NoteType } from './types/main';
+
+export const DEFAULT_NOTES: NoteType[] = [
   {
     id: '1',
     title: 'note 1',

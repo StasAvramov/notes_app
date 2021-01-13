@@ -38,7 +38,7 @@ export default function ViewNote() {
       return setNote(getNoteById(id));
     }
     history.replace(ROUTES.home);
-  }, [id, history, getNoteById, isNotesReady]);
+  }, [id, history, getNoteById, isNotesReady, getNotes]);
 
   return (
     <>

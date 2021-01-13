@@ -46,7 +46,7 @@ export default function Home() {
     if (isAuthenticated && !isNotesReady) {
       getNotes();
     }
-  }, [isAuthenticated, getNotes]);
+  }, [isAuthenticated, getNotes, isNotesReady]);
 
   return (
     <>

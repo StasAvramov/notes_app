@@ -1,6 +1,7 @@
-import { React, useEffect } from 'react';
+import React from 'react';
+import { useEffect } from 'react';
 import { Redirect, Switch, useLocation } from 'react-router-dom';
-import { useAuth, useNotes } from './hooks';
+import { useAuth } from './hooks';
 
 import { Login, Header, Home, ActionNote, ViewNote } from './components';
 import { PrivateRoute, PublicRoute } from './components/common';
@@ -11,7 +12,6 @@ import { ROUTES } from './constants/routes';
 
 function App() {
   const { isAuthenticated, getCurrentUser } = useAuth();
-  const { notes, getNotes, isNotesReady } = useNotes();
   const location = useLocation();
 
   const isLoginPage = location.pathname === ROUTES.login;

@@ -44,9 +44,7 @@ export default function Login() {
     },
     validationSchema: YUP_SCHEMA,
     onSubmit: values => {
-      const { email } = values;
-      const user = { email: email };
-      onLogin(user);
+      onLogin({ email: values.email });
     },
   });
 

@@ -75,7 +75,7 @@ export default function AddNote() {
           alert('There is no changes to save!');
           return;
         }
-        onEditNote({ id: note.id, ...values });
+        onEditNote({ id: note.id, fieldsToUpdate: values });
       }
 
       history.replace('/notes');
