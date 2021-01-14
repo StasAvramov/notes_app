@@ -1,15 +1,17 @@
-import { React, useEffect, useState } from 'react';
+import * as React from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { useFormik } from 'formik';
 
 import { MenuItem, TextField, Typography, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { Buttons } from '../../components';
+import { Buttons } from '../index';
 
 import { useNotes, useAuth } from '../../hooks';
 import { ROUTES } from '../../constants/routes';
 import { CATEGORIES } from '../../constants/categories';
+import { FormikValuesType, UseParamsIdType } from '../../types/react-types';
+import { CategoryType, NoteType, Nullable } from '../../types/main';
 
 const useStyles = makeStyles(theme => ({
   wrapper: {
@@ -24,11 +26,12 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(1),
   },
 }));
+const { useEffect, useState } = React;
 
 export default function AddNote() {
   const classes = useStyles();
   const history = useHistory();
-  const { id } = useParams();
+  const { id } = useParams<UseParamsIdType>();
 
   const { user } = useAuth();
   const {
@@ -38,7 +41,7 @@ export default function AddNote() {
     isNotesReady,
     getNotes,
   } = useNotes();
-  const [note, setNote] = useState(null);
+  const [note, setNote] = useState<Nullable<NoteType>>(null);
 
   useEffect(() => {
     if (!id) {
@@ -46,11 +49,13 @@ export default function AddNote() {
     }
 
     if (!isNotesReady) {
-      return getNotes();
+      getNotes();
+      return;
     }
 
     if (getNoteById(id)) {
-      return setNote(getNoteById(id));
+      setNote(getNoteById(id));
+      return;
     }
 
     history.replace(ROUTES.home);
@@ -63,11 +68,12 @@ export default function AddNote() {
       category: note ? note.category : '',
     },
     enableReinitialize: true,
-    onSubmit: values => {
+    onSubmit: (values: FormikValuesType) => {
       if (!id) {
         onAddNote({ ...values, userEmail: user.email });
       } else {
         if (
+          note &&
           note.category === values.category &&
           note.title === values.title &&
           note.description === values.description
@@ -75,7 +81,7 @@ export default function AddNote() {
           alert('There is no changes to save!');
           return;
         }
-        onEditNote({ id: note.id, fieldsToUpdate: values });
+        onEditNote({ id: note ? note.id : '', fieldsToUpdate: values });
       }
 
       history.replace('/notes');
@@ -90,7 +96,6 @@ export default function AddNote() {
       <form className={classes.form} onSubmit={formik.handleSubmit}>
         <TextField
           id="title"
-          name="title"
           type="text"
           label="Title"
           variant="outlined"
@@ -116,7 +121,6 @@ export default function AddNote() {
         </TextField>
         <TextField
           id="description"
-          name="description"
           type="text"
           label="Description"
           variant="outlined"

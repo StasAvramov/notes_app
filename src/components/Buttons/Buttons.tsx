@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import { useNotes } from '../../hooks';
 import { ROUTES } from '../../constants/routes';
+import { UseParamsIdType } from '../../types/react-types';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -20,12 +21,12 @@ const useStyles = makeStyles(theme => ({
 
 export default function Buttons() {
   const classes = useStyles();
-  const match = useRouteMatch();
+  const match = useRouteMatch<UseParamsIdType>();
   const { onDeleteNote } = useNotes();
 
   const IS_ADD_VIEW = !match.params.id;
   const IS_EDIT_VIEW = match.path.includes('edit');
-  const NOTE_ID = Number(match.params.id);
+  const NOTE_ID = match.params.id;
 
   return (
     <Container className={classes.container}>

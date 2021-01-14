@@ -22,7 +22,7 @@ import {
 } from '../../services/notes.service';
 
 import { DEFAULT_NOTES } from '../../notes';
-import { ErrorType, NoteType } from '../../types/main';
+import { NoteType } from '../../types/main';
 
 function getNotesFromLocalStorageAsJS(): NoteType[] {
   const notesAsJson = localStorage.getItem('notes');
@@ -64,7 +64,7 @@ function* addNote(action: ReturnType<typeof createNoteRequest>) {
 
     yield put(createNoteSuccess(newNote));
   } catch (error) {
-    yield put(createNoteError(error));
+    yield put(createNoteError(error as Error));
   }
 }
 

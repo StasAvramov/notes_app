@@ -10,7 +10,7 @@ import { Container } from '@material-ui/core';
 
 import { ROUTES } from './constants/routes';
 
-function App() {
+export default function App() {
   const { isAuthenticated, getCurrentUser } = useAuth();
   const location = useLocation();
 
@@ -56,5 +56,3 @@ function App() {
     </Container>
   );
 }
-
-export default App;

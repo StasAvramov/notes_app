@@ -1,29 +1,26 @@
 import { createAction } from '@reduxjs/toolkit';
 
 import {
+  CreateNoteParamsType,
   DeleteNotePayloadType,
   EditNoteRequestPayloadType,
   EditNoteSuccessPayloadType,
 } from '../../types/notes';
-import { ErrorType, NoteType, Nullable } from '../../types/main';
+import { NoteType, Nullable } from '../../types/main';
 
 export const getNotesRequest = createAction('NOTES/GET_NOTES_REQUEST');
 export const getNotesSuccess = createAction<Nullable<NoteType[]>>(
   'NOTES/GET_NOTES_SUCCESS',
 );
-export const getNotesError = createAction<Nullable<ErrorType>>(
-  'NOTES/GET_NOTES_ERROR',
-);
+export const getNotesError = createAction<any>('NOTES/GET_NOTES_ERROR');
 
-export const createNoteRequest = createAction<NoteType>(
+export const createNoteRequest = createAction<CreateNoteParamsType>(
   'NOTES/CREATE_NOTE_REQUEST',
 );
 export const createNoteSuccess = createAction<NoteType>(
   'NOTES/CREATE_NOTE_SUCCESS',
 );
-export const createNoteError = createAction<Nullable<ErrorType>>(
-  'NOTES/CREATE_NOTE_ERROR',
-);
+export const createNoteError = createAction<Error>('NOTES/CREATE_NOTE_ERROR');
 
 export const deleteNoteRequest = createAction<DeleteNotePayloadType>(
   'NOTES/DELETE_NOTE_REQUEST',
@@ -31,9 +28,7 @@ export const deleteNoteRequest = createAction<DeleteNotePayloadType>(
 export const deleteNoteSuccess = createAction<DeleteNotePayloadType>(
   'NOTES/DELETE_NOTE_SUCCESS',
 );
-export const deleteNoteError = createAction<Nullable<ErrorType>>(
-  'NOTES/DELETE_NOTE_ERROR',
-);
+export const deleteNoteError = createAction<any>('NOTES/DELETE_NOTE_ERROR');
 
 export const editNoteRequest = createAction<EditNoteRequestPayloadType>(
   'NOTES/EDIT_NOTE_REQUEST',
@@ -41,6 +36,4 @@ export const editNoteRequest = createAction<EditNoteRequestPayloadType>(
 export const editNoteSuccess = createAction<EditNoteSuccessPayloadType>(
   'NOTES/EDIT_NOTE_SUCCESS',
 );
-export const editNoteError = createAction<Nullable<ErrorType>>(
-  'NOTES/EDIT_NOTE_ERROR',
-);
+export const editNoteError = createAction<any>('NOTES/EDIT_NOTE_ERROR');

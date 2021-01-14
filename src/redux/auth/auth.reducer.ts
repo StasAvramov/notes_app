@@ -1,4 +1,8 @@
-import { combineReducers, createReducer } from '@reduxjs/toolkit';
+import {
+  combineReducers,
+  createReducer,
+  PayloadAction,
+} from '@reduxjs/toolkit';
 import {
   loginRequest,
   loginSuccess,
@@ -8,33 +12,34 @@ import {
   getCurrentUserError,
   logoutSuccess,
 } from './auth.actions';
-import { ErrorType, Nullable } from '../../types/main';
+import { Nullable } from '../../types/main';
 import { UserPayloadType } from '../../types/auth';
+import notesReducer from '../notes/notes.reducer';
 
 const initialUserState = null as Nullable<UserPayloadType>;
+const initialErrorState = null as any;
 
 const userReducer = createReducer(initialUserState, builder => {
   builder
-    .addCase(loginSuccess, (_, { payload }) => payload)
-    .addCase(getCurrentUserSuccess, (_, { payload }) => payload)
-    .addCase(logoutSuccess, (_, { payload }) => null);
+    .addCase(loginSuccess, (state, { payload }) => payload)
+    .addCase(getCurrentUserSuccess, (state, { payload }) => payload)
+    .addCase(logoutSuccess, (state, { payload }) => null);
 });
 
 const isAuthReady = createReducer(false, builder => {
   builder
-    .addCase(loginSuccess, (_, { payload }) => true)
-    .addCase(getCurrentUserSuccess, (_, { payload }) => true)
-    .addCase(loginError, (_, { payload }) => true)
-    .addCase(getCurrentUserError, (_, { payload }) => true)
-    .addCase(logoutSuccess, (_, { payload }) => false);
+    .addCase(loginSuccess, (state, { payload }) => true)
+    .addCase(getCurrentUserSuccess, (state, { payload }) => true)
+    .addCase(loginError, (state, { payload }) => true)
+    .addCase(getCurrentUserError, (state, { payload }) => true)
+    .addCase(logoutSuccess, (state, { payload }) => false);
 });
 
-const initialErrorState = null as Nullable<ErrorType>;
 const errorReducer = createReducer(initialErrorState, builder => {
   builder
-    .addCase(loginError, (_, { payload }) => payload)
-    .addCase(getCurrentUserError, (_, { payload }) => payload)
-    .addCase(logoutSuccess, (_, { payload }) => null);
+    .addCase(loginError, (state, { payload }) => payload)
+    .addCase(getCurrentUserError, (state, { payload }) => payload)
+    .addCase(logoutSuccess, (state, { payload }) => null);
 });
 
 const authReducer = combineReducers({

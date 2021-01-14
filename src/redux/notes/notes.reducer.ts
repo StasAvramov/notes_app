@@ -13,13 +13,10 @@ import {
 
 import { logoutSuccess } from '../auth/auth.actions';
 
-import {
-  NotesReducerArrayStateType,
-  NotesReducerErrorStateType,
-} from '../../types/notes';
+import { NoteType } from '../../types/main';
 
-const initialNotesArrayState = null as NotesReducerArrayStateType;
-const initialNotesErrorState = null as NotesReducerErrorStateType;
+const initialNotesArrayState = [] as NoteType[];
+const initialNotesErrorState = null as Error | null;
 
 const notesArrayReducer = createReducer(initialNotesArrayState, builder => {
   builder
@@ -35,12 +32,10 @@ const notesArrayReducer = createReducer(initialNotesArrayState, builder => {
       state ? state.filter(el => el.id !== payload.id) : state,
     )
     .addCase(editNoteSuccess, (state, { payload }) => {
-      if (state) {
-        state[payload.idx] = payload.note;
-      }
+      state[payload.idx] = payload.note;
       return state;
     })
-    .addCase(logoutSuccess, () => null);
+    .addCase(logoutSuccess, () => []);
 });
 
 const isNotesReady = createReducer(false, builder => {

@@ -7,7 +7,7 @@ export function createNote(params: CreateNoteParamsType): NoteType {
     ...params,
     id: uuidv4(),
     createdAt: new Date().toLocaleString(),
-    updatedAt: '',
+    updatedAt: null,
   };
 }
 

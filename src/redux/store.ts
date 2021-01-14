@@ -4,6 +4,7 @@ import createSagaMiddleware from 'redux-saga';
 
 import { userReducer } from './auth';
 import { notesReducer } from './notes';
+
 import userSaga from './auth/auth.sagas';
 import notesSaga from './notes/notes.sagas';
 
@@ -19,5 +20,5 @@ const store = configureStore({
 });
 
 sagaMiddleware.run(rootSaga);
-
+export type RootState = ReturnType<typeof store.getState>;
 export default store;

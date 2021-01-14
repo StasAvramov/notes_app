@@ -1,12 +1,20 @@
-import { React } from 'react';
+import * as React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useFormik } from 'formik';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { InputLabel, Select, FormControl, MenuItem } from '@material-ui/core';
+import {
+  InputLabel,
+  Select,
+  FormControl,
+  MenuItem,
+  MenuItemProps,
+} from '@material-ui/core';
 
 import { CATEGORIES } from '../../constants/categories';
 import { ROUTES } from '../../constants/routes';
+import { UseParamsCategoryType } from '../../types/react-types';
+import { CategoryType } from '../../types/main';
 
 const useStyles = makeStyles(theme => ({
   formControl: {
