@@ -1,10 +1,11 @@
-import { React } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 
 import { Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Note from './Note';
+import { CustomLoader } from '../common';
 
 import { useNotes } from '../../hooks';
 
@@ -25,9 +26,13 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+type UseParamsCategoryType = {
+  category: string;
+};
+
 export default function Notes() {
   const classes = useStyles();
-  const { category } = useParams();
+  const { category } = useParams<UseParamsCategoryType>();
 
   let { getSortedNotes } = useNotes();
   let sortedNotes = getSortedNotes(category);
@@ -37,7 +42,7 @@ export default function Notes() {
       {sortedNotes ? (
         sortedNotes.map(note => <Note key={note.id} note={note} />)
       ) : (
-        <div>Loading...</div>
+        <CustomLoader />
       )}
     </Box>
   );

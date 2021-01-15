@@ -44,9 +44,7 @@ export default function Login() {
     },
     validationSchema: YUP_SCHEMA,
     onSubmit: values => {
-      const { email } = values;
-      const user = { email: email };
-      onLogin(user);
+      onLogin({ email: values.email });
     },
   });
 
@@ -61,7 +59,6 @@ export default function Login() {
       <form className={classes.form} onSubmit={formik.handleSubmit}>
         <TextField
           id="email"
-          name="email"
           type="email"
           label="Email Address *"
           variant="outlined"
@@ -76,7 +73,6 @@ export default function Login() {
 
         <TextField
           id="password"
-          name="password"
           type="password"
           label="Password *"
           variant="outlined"

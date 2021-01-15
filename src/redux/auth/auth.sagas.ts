@@ -11,13 +11,13 @@ import {
   getCurrentUserError,
 } from './auth.actions';
 
-function* login({ payload }) {
+function* login(action: ReturnType<typeof loginRequest>) {
   try {
-    const user = JSON.stringify(payload);
+    const user = JSON.stringify(action.payload);
     localStorage.setItem('user', user);
 
-    yield put(loginSuccess(payload));
-  } catch (error) {
+    yield put(loginSuccess(action.payload));
+  } catch (error: any) {
     yield put(loginError(error));
   }
 }
@@ -28,7 +28,7 @@ function* logout() {
     localStorage.removeItem('notes');
 
     yield put(logoutSuccess());
-  } catch (error) {
+  } catch (error: any) {
     yield put(logoutError(error));
   }
 }
@@ -43,15 +43,15 @@ function* getCurrentUser() {
 
       yield put(getCurrentUserSuccess(user));
     }
-  } catch (error) {
+  } catch (error: any) {
     yield put(getCurrentUserError(error));
   }
 }
 
 export default function* userSaga() {
   yield all([
-    yield takeLatest(loginRequest().type, login),
-    yield takeLatest(logoutRequest().type, logout),
-    yield takeLatest(getCurrentUserRequest().type, getCurrentUser),
+    yield takeLatest(loginRequest.type, login),
+    yield takeLatest(logoutRequest.type, logout),
+    yield takeLatest(getCurrentUserRequest.type, getCurrentUser),
   ]);
 }

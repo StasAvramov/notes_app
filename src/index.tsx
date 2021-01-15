@@ -13,14 +13,14 @@ import store from './redux/store';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <BrowserRouter>
-        <CssBaseline />
-        <ErrorBoundary>
+    <ErrorBoundary>
+      <Provider store={store}>
+        <BrowserRouter>
+          <CssBaseline />
           <App />
-        </ErrorBoundary>
-      </BrowserRouter>
-    </Provider>
+        </BrowserRouter>
+      </Provider>
+    </ErrorBoundary>
   </React.StrictMode>,
   document.getElementById('root'),
 );

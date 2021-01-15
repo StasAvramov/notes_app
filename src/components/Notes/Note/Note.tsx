@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import React, { useState, FC } from 'react';
 import { Link } from 'react-router-dom';
 
 import {
@@ -17,6 +17,7 @@ import { ExpandMore } from '@material-ui/icons';
 
 import { useNotes } from '../../../hooks';
 import { ROUTES } from '../../../constants/routes';
+import { NoteType } from '../../../types/main';
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -57,13 +58,19 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function Note({ note }) {
+type Props = { note: NoteType };
+
+const Note: FC<Props> = ({ note }) => {
   const classes = useStyles();
   const { onDeleteNote } = useNotes();
   const [expanded, setExpanded] = useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
+  };
+
+  const handleDeleteNoteClick = () => {
+    onDeleteNote(note.id);
   };
 
   return (
@@ -123,7 +130,7 @@ export default function Note({ note }) {
             View
           </Button>
           <Button
-            onClick={() => onDeleteNote(note.id)}
+            onClick={handleDeleteNoteClick}
             variant="contained"
             color="secondary"
             size="large"
@@ -134,4 +141,6 @@ export default function Note({ note }) {
       </Collapse>
     </Card>
   );
-}
+};
+
+export default Note;

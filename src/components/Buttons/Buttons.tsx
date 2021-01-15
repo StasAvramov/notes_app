@@ -18,14 +18,22 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+type UseParamsIdType = {
+  id: string;
+};
+
 export default function Buttons() {
   const classes = useStyles();
-  const match = useRouteMatch();
+  const match = useRouteMatch<UseParamsIdType>();
   const { onDeleteNote } = useNotes();
 
   const IS_ADD_VIEW = !match.params.id;
   const IS_EDIT_VIEW = match.path.includes('edit');
-  const NOTE_ID = Number(match.params.id);
+  const NOTE_ID = match.params.id;
+
+  const handleClick = () => {
+    onDeleteNote(NOTE_ID);
+  };
 
   return (
     <Container className={classes.container}>
@@ -79,7 +87,7 @@ export default function Buttons() {
             variant="contained"
             color="secondary"
             className={classes.button}
-            onClick={() => onDeleteNote(NOTE_ID)}
+            onClick={handleClick}
           >
             Delete
           </Button>

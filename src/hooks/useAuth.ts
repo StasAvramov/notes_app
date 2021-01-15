@@ -6,28 +6,30 @@ import {
   getCurrentUserRequest,
 } from '../redux/auth/auth.actions';
 
+import { RootState } from '../redux/store';
+import { UserPayloadType } from '../types/auth';
+
 export default function useAuth() {
   const dispatch = useDispatch();
 
-  const isAuthenticated = useSelector(state => !!state.auth.user);
-  const isAuthReady = useSelector(state => state.auth.isAuthReady);
-
-  const user = useSelector(state => state.auth.user);
+  const { isAuthReady, error, user } = useSelector(
+    (state: RootState) => state.auth,
+  );
 
   const getCurrentUser = useCallback(() => dispatch(getCurrentUserRequest()), [
     dispatch,
   ]);
-
-  const onLogin = params => dispatch(loginRequest(params));
+  const onLogin = (params: UserPayloadType) => dispatch(loginRequest(params));
 
   const onLogout = useCallback(() => dispatch(logoutRequest()), [dispatch]);
 
   return {
-    isAuthenticated,
+    error,
+    isAuthenticated: !!user,
     isAuthReady,
     getCurrentUser,
     onLogin,
     onLogout,
-    user,
+    user: user || { email: '' },
   };
 }

@@ -1,16 +1,16 @@
-import { React, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth, useNotes } from '../../hooks';
 
-import Category from '../Category';
 import AddIcon from '@material-ui/icons/Add';
-
 import { Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import Notes from '../Notes';
-import { ROUTES } from '../../constants/routes';
+import Category from '../Category';
 import { CustomLoader } from '../common';
+import Notes from '../Notes';
+
+import { ROUTES } from '../../constants/routes';
+import { useAuth, useNotes } from '../../hooks';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -46,7 +46,7 @@ export default function Home() {
     if (isAuthenticated && !isNotesReady) {
       getNotes();
     }
-  }, [isAuthenticated, getNotes]);
+  }, [isAuthenticated, getNotes, isNotesReady]);
 
   return (
     <>
