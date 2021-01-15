@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { NoteType } from '../types/main';
+import { CategoryType, NoteType } from '../types/main';
 import { UpdateNoteFieldsType, CreateNoteParamsType } from '../types/notes';
 
 export function createNote(params: CreateNoteParamsType): NoteType {
@@ -28,3 +28,7 @@ export function updateNote(
     updatedAt: new Date().toLocaleString(),
   };
 }
+
+export const capitalize = (s: string): CategoryType => {
+  return (s.charAt(0).toUpperCase() + s.slice(1)) as CategoryType;
+};

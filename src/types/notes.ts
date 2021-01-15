@@ -1,12 +1,9 @@
 import { NoteType } from './main';
 
-export type CreateNoteParamsType = {
-  // Pick<NoteType, 'userEmail' |'category' | 'title' | 'description'>
-  userEmail: NoteType['userEmail'];
-  title: NoteType['title'];
-  category: NoteType['category'];
-  description: NoteType['description'];
-};
+export type CreateNoteParamsType = Pick<
+  NoteType,
+  'userEmail' | 'category' | 'title' | 'description'
+>;
 
 export type UpdateNoteFieldsType = Partial<
   Pick<NoteType, 'category' | 'title' | 'description'>

@@ -59,7 +59,6 @@ export default function Login() {
       <form className={classes.form} onSubmit={formik.handleSubmit}>
         <TextField
           id="email"
-          name="email"
           type="email"
           label="Email Address *"
           variant="outlined"
@@ -74,7 +73,6 @@ export default function Login() {
 
         <TextField
           id="password"
-          name="password"
           type="password"
           label="Password *"
           variant="outlined"

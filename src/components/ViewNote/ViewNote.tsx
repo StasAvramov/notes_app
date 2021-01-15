@@ -1,6 +1,4 @@
-import * as React from 'react';
-
-// import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 
 import { Box, Paper, Typography } from '@material-ui/core';
@@ -10,10 +8,9 @@ import { Buttons } from '../index';
 import { CustomLoader } from '../common';
 import { useNotes } from '../../hooks';
 import { ROUTES } from '../../constants/routes';
-import { UseParamsIdType } from '../../types/react-types';
-import { NoteType, Nullable } from '../../types/main';
 
-const { useEffect, useState } = React;
+import { NoteType, Nullable } from '../../types/main';
+type UseParamsIdType = { id: string };
 
 const useStyles = makeStyles(theme => ({
   container: {

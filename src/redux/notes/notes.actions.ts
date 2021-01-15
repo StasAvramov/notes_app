@@ -12,7 +12,7 @@ export const getNotesRequest = createAction('NOTES/GET_NOTES_REQUEST');
 export const getNotesSuccess = createAction<Nullable<NoteType[]>>(
   'NOTES/GET_NOTES_SUCCESS',
 );
-export const getNotesError = createAction<any>('NOTES/GET_NOTES_ERROR');
+export const getNotesError = createAction<Error>('NOTES/GET_NOTES_ERROR');
 
 export const createNoteRequest = createAction<CreateNoteParamsType>(
   'NOTES/CREATE_NOTE_REQUEST',
@@ -28,7 +28,7 @@ export const deleteNoteRequest = createAction<DeleteNotePayloadType>(
 export const deleteNoteSuccess = createAction<DeleteNotePayloadType>(
   'NOTES/DELETE_NOTE_SUCCESS',
 );
-export const deleteNoteError = createAction<any>('NOTES/DELETE_NOTE_ERROR');
+export const deleteNoteError = createAction<Error>('NOTES/DELETE_NOTE_ERROR');
 
 export const editNoteRequest = createAction<EditNoteRequestPayloadType>(
   'NOTES/EDIT_NOTE_REQUEST',
@@ -36,4 +36,4 @@ export const editNoteRequest = createAction<EditNoteRequestPayloadType>(
 export const editNoteSuccess = createAction<EditNoteSuccessPayloadType>(
   'NOTES/EDIT_NOTE_SUCCESS',
 );
-export const editNoteError = createAction<any>('NOTES/EDIT_NOTE_ERROR');
+export const editNoteError = createAction<Error>('NOTES/EDIT_NOTE_ERROR');

@@ -25,7 +25,7 @@ export default function useNotes() {
     return note ? note : null;
   };
 
-  const getSortedNotes = (category: NoteType['category']) => {
+  const getSortedNotes = (category: string): NoteType[] => {
     if (!category) {
       return notes;
     }

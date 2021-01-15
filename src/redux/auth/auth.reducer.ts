@@ -1,20 +1,15 @@
+import { combineReducers, createReducer } from '@reduxjs/toolkit';
 import {
-  combineReducers,
-  createReducer,
-  PayloadAction,
-} from '@reduxjs/toolkit';
-import {
-  loginRequest,
+  // loginRequest,
   loginSuccess,
   loginError,
-  getCurrentUserRequest,
+  // getCurrentUserRequest,
   getCurrentUserSuccess,
   getCurrentUserError,
   logoutSuccess,
 } from './auth.actions';
 import { Nullable } from '../../types/main';
 import { UserPayloadType } from '../../types/auth';
-import notesReducer from '../notes/notes.reducer';
 
 const initialUserState = null as Nullable<UserPayloadType>;
 const initialErrorState = null as any;

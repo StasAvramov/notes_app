@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { useFormik } from 'formik';
 
@@ -10,8 +10,7 @@ import { Buttons } from '../index';
 import { useNotes, useAuth } from '../../hooks';
 import { ROUTES } from '../../constants/routes';
 import { CATEGORIES } from '../../constants/categories';
-import { FormikValuesType, UseParamsIdType } from '../../types/react-types';
-import { CategoryType, NoteType, Nullable } from '../../types/main';
+import { NoteType, Nullable } from '../../types/main';
 
 const useStyles = makeStyles(theme => ({
   wrapper: {
@@ -26,13 +25,16 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(1),
   },
 }));
-const { useEffect, useState } = React;
+
+type FormikValuesType = Pick<NoteType, 'category' | 'title' | 'description'>;
+type UseParamsIdType = {
+  id: string;
+};
 
 export default function AddNote() {
   const classes = useStyles();
   const history = useHistory();
   const { id } = useParams<UseParamsIdType>();
-
   const { user } = useAuth();
   const {
     onAddNote,
@@ -44,20 +46,21 @@ export default function AddNote() {
   const [note, setNote] = useState<Nullable<NoteType>>(null);
 
   useEffect(() => {
+    //if !id === Add Note Page
     if (!id) {
       return;
     }
-
+    //if Edit Note Page => request for notes
     if (!isNotesReady) {
       getNotes();
       return;
     }
-
+    //if note with id from useParams is in the state => setNote()
     if (getNoteById(id)) {
       setNote(getNoteById(id));
       return;
     }
-
+    //redirect to home if note with id doesn't exist
     history.replace(ROUTES.home);
   }, [history, id, note, isNotesReady, getNoteById, getNotes]);
 
@@ -113,9 +116,9 @@ export default function AddNote() {
           required
           {...formik.getFieldProps('category')}
         >
-          {CATEGORIES.map(ctgr => (
-            <MenuItem key={ctgr} value={ctgr}>
-              {ctgr}
+          {CATEGORIES.map(category => (
+            <MenuItem key={category} value={category}>
+              {category}
             </MenuItem>
           ))}
         </TextField>

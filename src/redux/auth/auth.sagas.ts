@@ -10,7 +10,6 @@ import {
   getCurrentUserSuccess,
   getCurrentUserError,
 } from './auth.actions';
-import { createNoteRequest } from '../notes/notes.actions';
 
 function* login(action: ReturnType<typeof loginRequest>) {
   try {
