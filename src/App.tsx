@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { Redirect, Switch, useLocation } from 'react-router-dom';
 import { useAuth } from './hooks';
@@ -9,12 +9,22 @@ import { PrivateRoute, PublicRoute } from './components/common';
 import { Container } from '@material-ui/core';
 
 import { ROUTES } from './constants/routes';
+import { onAuthStateChange } from './services/firebase.auth.service';
 
 export default function App() {
   const { isAuthenticated, getCurrentUser } = useAuth();
+  const [user, setUser] = useState({ loggedIn: false });
+
   const location = useLocation();
 
   const isLoginPage = location.pathname === ROUTES.login;
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChange(setUser);
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   useEffect(() => {
     if (!isAuthenticated) {

@@ -9,15 +9,17 @@ import {
   logoutSuccess,
 } from './auth.actions';
 import { Nullable } from '../../types/main';
-import { UserPayloadType } from '../../types/auth';
+import { UserLoginSuccessPayloadType } from '../../types/auth';
 
-const initialUserState = null as Nullable<UserPayloadType>;
+const initialUserState = null as Nullable<UserLoginSuccessPayloadType>;
 const initialErrorState = null as any;
 
 const userReducer = createReducer(initialUserState, builder => {
   builder
     .addCase(loginSuccess, (state, { payload }) => payload)
+
     .addCase(getCurrentUserSuccess, (state, { payload }) => payload)
+
     .addCase(logoutSuccess, (state, { payload }) => null);
 });
 

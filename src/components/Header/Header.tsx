@@ -24,6 +24,11 @@ export default function Header() {
   const { onLogout } = useAuth();
   const history = useHistory();
 
+  const onLogoutClickHandler = () => {
+    history.replace(ROUTES.home);
+    onLogout();
+  };
+
   return (
     <AppBar position="sticky" className={classes.header}>
       <Toolbar className={classes.toolbar}>
@@ -35,13 +40,7 @@ export default function Header() {
         >
           My Notes
         </Button>
-        <Button
-          onClick={() => {
-            history.replace(ROUTES.home);
-            onLogout();
-          }}
-          color="inherit"
-        >
+        <Button onClick={onLogoutClickHandler} color="inherit">
           Logout
         </Button>
       </Toolbar>

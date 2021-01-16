@@ -1,4 +1,4 @@
-import { put, takeLatest, all } from 'redux-saga/effects';
+import { put, takeLatest, all, call } from 'redux-saga/effects';
 import {
   loginRequest,
   loginSuccess,
@@ -10,25 +10,54 @@ import {
   getCurrentUserSuccess,
   getCurrentUserError,
 } from './auth.actions';
+import {
+  onAuthStateChange,
+  onFirebaseLogin,
+  onFirebaseLogout,
+  onFirebaseRegister,
+} from '../../services/firebase.auth.service';
+import { UserLoginSuccessPayloadType } from '../../types/auth';
 
 function* login(action: ReturnType<typeof loginRequest>) {
   try {
-    const user = JSON.stringify(action.payload);
-    localStorage.setItem('user', user);
+    //Если была создана новая учетная запись,
+    //пользователь входит в систему( ЛОГИНИТСЯ) автоматически
+    const newUser = yield call(onFirebaseRegister, action.payload);
+    if (newUser) {
+      console.log('New user login');
+      const user: UserLoginSuccessPayloadType = {
+        email: newUser.user.email,
+        id: newUser.user.uid,
+      };
+      // localStorage.setItem('user', JSON.stringify(user));
 
-    yield put(loginSuccess(action.payload));
-  } catch (error: any) {
+      yield put(loginSuccess(user));
+      return;
+    }
+    //В противном случае логиним его
+    console.log('User login');
+    const loggedUser = yield call(onFirebaseLogin, action.payload);
+
+    const user: UserLoginSuccessPayloadType = {
+      email: loggedUser.user.email,
+      id: loggedUser.user.uid,
+    };
+
+    // localStorage.setItem('user', JSON.stringify(user));
+
+    yield put(loginSuccess(user));
+  } catch (error) {
     yield put(loginError(error));
   }
 }
 
 function* logout() {
   try {
-    localStorage.removeItem('user');
-    localStorage.removeItem('notes');
-
+    // localStorage.removeItem('user');
+    // localStorage.removeItem('notes');
+    yield call(onFirebaseLogout);
     yield put(logoutSuccess());
-  } catch (error: any) {
+  } catch (error) {
     yield put(logoutError(error));
   }
 }
@@ -36,6 +65,7 @@ function* logout() {
 function* getCurrentUser() {
   try {
     const userAsJson = localStorage.getItem('user');
+
     if (!userAsJson) {
       yield put(getCurrentUserSuccess(null));
     } else {
@@ -43,7 +73,7 @@ function* getCurrentUser() {
 
       yield put(getCurrentUserSuccess(user));
     }
-  } catch (error: any) {
+  } catch (error) {
     yield put(getCurrentUserError(error));
   }
 }

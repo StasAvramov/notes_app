@@ -44,7 +44,7 @@ export default function Login() {
     },
     validationSchema: YUP_SCHEMA,
     onSubmit: values => {
-      onLogin({ email: values.email });
+      onLogin(values);
     },
   });
 
