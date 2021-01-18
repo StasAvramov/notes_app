@@ -11,7 +11,6 @@ import {
   getCurrentUserError,
 } from './auth.actions';
 import {
-  onAuthStateChange,
   onFirebaseLogin,
   onFirebaseLogout,
   onFirebaseRegister,
@@ -23,8 +22,9 @@ function* login(action: ReturnType<typeof loginRequest>) {
     //Если была создана новая учетная запись,
     //пользователь входит в систему( ЛОГИНИТСЯ) автоматически
     const newUser = yield call(onFirebaseRegister, action.payload);
+
     if (newUser) {
-      console.log('New user login');
+      console.log('New user created and logged in');
       const user: UserLoginSuccessPayloadType = {
         email: newUser.user.email,
         id: newUser.user.uid,
@@ -34,7 +34,7 @@ function* login(action: ReturnType<typeof loginRequest>) {
       yield put(loginSuccess(user));
       return;
     }
-    //В противном случае логиним его
+    //В противном случае пользователь уже зарегистрирован. просто логиним его
     console.log('User login');
     const loggedUser = yield call(onFirebaseLogin, action.payload);
 
@@ -53,8 +53,6 @@ function* login(action: ReturnType<typeof loginRequest>) {
 
 function* logout() {
   try {
-    // localStorage.removeItem('user');
-    // localStorage.removeItem('notes');
     yield call(onFirebaseLogout);
     yield put(logoutSuccess());
   } catch (error) {
@@ -62,17 +60,9 @@ function* logout() {
   }
 }
 
-function* getCurrentUser() {
+function* getCurrentUser(action: ReturnType<typeof getCurrentUserRequest>) {
   try {
-    const userAsJson = localStorage.getItem('user');
-
-    if (!userAsJson) {
-      yield put(getCurrentUserSuccess(null));
-    } else {
-      const user = JSON.parse(userAsJson);
-
-      yield put(getCurrentUserSuccess(user));
-    }
+    yield put(getCurrentUserSuccess(action.payload));
   } catch (error) {
     yield put(getCurrentUserError(error));
   }

@@ -21,18 +21,14 @@ const initialNotesErrorState = null as Error | null;
 const notesArrayReducer = createReducer(initialNotesArrayState, builder => {
   builder
     .addCase(getNotesSuccess, (state, { payload }) => (!payload ? [] : payload))
-    .addCase(createNoteSuccess, (state, { payload }) => {
-      if (state) {
-        state.push(payload);
-        return state;
-      }
-      return [payload];
-    })
-    .addCase(deleteNoteSuccess, (state, { payload }) =>
-      state ? state.filter(el => el.id !== payload.id) : state,
+    .addCase(createNoteSuccess, (state, { payload }) => state)
+    .addCase(
+      deleteNoteSuccess,
+      (state, { payload }) => state,
+      // state ? state.filter(el => el.id !== payload.id) : state,
     )
     .addCase(editNoteSuccess, (state, { payload }) => {
-      state[payload.idx] = payload.note;
+      // state[payload.idx] = payload.note;
       return state;
     })
     .addCase(logoutSuccess, () => []);

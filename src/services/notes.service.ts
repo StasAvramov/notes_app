@@ -1,11 +1,9 @@
-import { v4 as uuidv4 } from 'uuid';
-import { CategoryType, NoteType } from '../types/main';
+import { CategoryType, NoteOnCreateType, NoteType } from '../types/main';
 import { UpdateNoteFieldsType, CreateNoteParamsType } from '../types/notes';
 
-export function createNote(params: CreateNoteParamsType): NoteType {
+export function createNote(params: CreateNoteParamsType): NoteOnCreateType {
   return {
-    ...params,
-    id: uuidv4(),
+    ...params, //title, description, category, userEmail
     createdAt: new Date().toLocaleString(),
     updatedAt: null,
   };

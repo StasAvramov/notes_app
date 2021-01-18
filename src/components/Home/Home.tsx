@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
 export default function Home() {
   const classes = useStyles();
   const { isAuthenticated } = useAuth();
-  const { isNotesReady, getNotes } = useNotes();
+  const { isNotesReady, getNotes, notes } = useNotes();
 
   useEffect(() => {
     if (isAuthenticated && !isNotesReady) {
@@ -50,7 +50,7 @@ export default function Home() {
 
   return (
     <>
-      <Category />
+      {notes.length > 0 && <Category />}
       {isNotesReady ? <Notes /> : <CustomLoader />}
       <Button
         component={Link}

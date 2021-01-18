@@ -1,6 +1,4 @@
 import { auth } from '../firebase';
-import firebase from 'firebase/app';
-import { UserLoginSuccessPayloadType } from '../types/auth';
 
 type UserType = {
   email: string;
@@ -43,7 +41,7 @@ export const onFirebaseLogout = () => {
     });
 };
 
-export function onAuthStateChange(callback: Function) {
+export function onFirebaseAuthStateChange(callback: Function) {
   return auth.onAuthStateChanged(user => {
     if (user) {
       callback({ email: user.email, id: user.uid });

@@ -12,7 +12,9 @@ export const logoutRequest = createAction('AUTH/LOGOUT_REQUEST');
 export const logoutSuccess = createAction('AUTH/LOGOUT_SUCCESS');
 export const logoutError = createAction<Error>('AUTH/LOGOUT_ERROR');
 
-export const getCurrentUserRequest = createAction('AUTH/CURRENT_USER_REQUEST');
+export const getCurrentUserRequest = createAction<
+  Nullable<UserLoginSuccessPayloadType>
+>('AUTH/CURRENT_USER_REQUEST');
 export const getCurrentUserSuccess = createAction<
   Nullable<UserLoginSuccessPayloadType>
 >('AUTH/CURRENT_USER_SUCCESS');

@@ -25,15 +25,11 @@ export const createNoteError = createAction<Error>('NOTES/CREATE_NOTE_ERROR');
 export const deleteNoteRequest = createAction<DeleteNotePayloadType>(
   'NOTES/DELETE_NOTE_REQUEST',
 );
-export const deleteNoteSuccess = createAction<DeleteNotePayloadType>(
-  'NOTES/DELETE_NOTE_SUCCESS',
-);
+export const deleteNoteSuccess = createAction('NOTES/DELETE_NOTE_SUCCESS');
 export const deleteNoteError = createAction<Error>('NOTES/DELETE_NOTE_ERROR');
 
 export const editNoteRequest = createAction<EditNoteRequestPayloadType>(
   'NOTES/EDIT_NOTE_REQUEST',
 );
-export const editNoteSuccess = createAction<EditNoteSuccessPayloadType>(
-  'NOTES/EDIT_NOTE_SUCCESS',
-);
+export const editNoteSuccess = createAction('NOTES/EDIT_NOTE_SUCCESS');
 export const editNoteError = createAction<Error>('NOTES/EDIT_NOTE_ERROR');

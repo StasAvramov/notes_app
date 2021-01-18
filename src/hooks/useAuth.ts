@@ -16,9 +16,11 @@ export default function useAuth() {
     (state: RootState) => state.auth,
   );
 
-  const getCurrentUser = useCallback(() => dispatch(getCurrentUserRequest()), [
-    dispatch,
-  ]);
+  const getCurrentUser = useCallback(
+    user => dispatch(getCurrentUserRequest(user)),
+    [dispatch],
+  );
+
   const onLogin = (params: UserPayloadType) => dispatch(loginRequest(params));
 
   const onLogout = useCallback(() => dispatch(logoutRequest()), [dispatch]);
