@@ -13,24 +13,17 @@ import {
 
 import { logoutSuccess } from '../auth/auth.actions';
 
-import { NoteType } from '../../types/main';
+import { NoteType, Nullable } from '../../types/main';
 
 const initialNotesArrayState = [] as NoteType[];
-const initialNotesErrorState = null as Error | null;
+const initialNotesErrorState = null as Nullable<Error>;
 
 const notesArrayReducer = createReducer(initialNotesArrayState, builder => {
   builder
     .addCase(getNotesSuccess, (state, { payload }) => (!payload ? [] : payload))
     .addCase(createNoteSuccess, (state, { payload }) => state)
-    .addCase(
-      deleteNoteSuccess,
-      (state, { payload }) => state,
-      // state ? state.filter(el => el.id !== payload.id) : state,
-    )
-    .addCase(editNoteSuccess, (state, { payload }) => {
-      // state[payload.idx] = payload.note;
-      return state;
-    })
+    .addCase(deleteNoteSuccess, (state, { payload }) => state)
+    .addCase(editNoteSuccess, (state, { payload }) => state)
     .addCase(logoutSuccess, () => []);
 });
 

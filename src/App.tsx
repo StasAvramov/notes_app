@@ -12,7 +12,7 @@ import { ROUTES } from './constants/routes';
 import { onFirebaseAuthStateChange } from './services/firebase.auth.service';
 
 export default function App() {
-  const { isAuthenticated, getCurrentUser } = useAuth();
+  const { getCurrentUser } = useAuth();
   const location = useLocation();
   const isLoginPage = location.pathname === ROUTES.login;
 
@@ -22,14 +22,6 @@ export default function App() {
       unsubscribe();
     };
   }, [getCurrentUser]);
-
-  useEffect(() => {}, []);
-
-  // useEffect(() => {
-  //   if (!isAuthenticated) {
-  //     getCurrentUser();
-  //   }
-  // }, [isAuthenticated, getCurrentUser]);
 
   return (
     <Container maxWidth="md">

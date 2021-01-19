@@ -3,9 +3,7 @@ import { UserLoginSuccessPayloadType, UserPayloadType } from '../../types/auth';
 import { Nullable } from '../../types/main';
 
 export const loginRequest = createAction<UserPayloadType>('AUTH/LOGIN_REQUEST');
-export const loginSuccess = createAction<UserLoginSuccessPayloadType>(
-  'AUTH/LOGIN_SUCCESS',
-);
+export const loginSuccess = createAction('AUTH/LOGIN_SUCCESS');
 export const loginError = createAction<Error>('AUTH/LOGIN_ERROR');
 
 export const logoutRequest = createAction('AUTH/LOGOUT_REQUEST');

@@ -24,6 +24,7 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
     boxShadow: theme.shadows[2],
     width: '100%',
+    maxWidth: '450px',
     borderRadius: theme.shape.borderRadius,
     marginBottom: theme.spacing(2),
     textAlign: 'center',
@@ -31,8 +32,8 @@ const useStyles = makeStyles(theme => ({
       width: '450px',
     },
   },
-  title: {
-    fontWeight: theme.typography.fontWeightBold,
+  header: {
+    maxWidth: '450px',
   },
   category: {
     position: 'absolute',
@@ -82,6 +83,7 @@ const Note: FC<Props> = ({ note }) => {
         className={classes.category}
       />
       <CardHeader
+        // classes={{content:classes.content}}
         action={
           <IconButton
             className={

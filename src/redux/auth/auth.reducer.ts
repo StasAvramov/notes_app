@@ -16,8 +16,7 @@ const initialErrorState = null as any;
 
 const userReducer = createReducer(initialUserState, builder => {
   builder
-    .addCase(loginSuccess, (state, { payload }) => payload)
-
+    .addCase(loginSuccess, (state, { payload }) => state)
     .addCase(getCurrentUserSuccess, (state, { payload }) => payload)
 
     .addCase(logoutSuccess, (state, { payload }) => null);

@@ -4,7 +4,6 @@ import {
   CreateNoteParamsType,
   DeleteNotePayloadType,
   EditNoteRequestPayloadType,
-  EditNoteSuccessPayloadType,
 } from '../../types/notes';
 import { NoteType, Nullable } from '../../types/main';
 
@@ -17,9 +16,7 @@ export const getNotesError = createAction<Error>('NOTES/GET_NOTES_ERROR');
 export const createNoteRequest = createAction<CreateNoteParamsType>(
   'NOTES/CREATE_NOTE_REQUEST',
 );
-export const createNoteSuccess = createAction<NoteType>(
-  'NOTES/CREATE_NOTE_SUCCESS',
-);
+export const createNoteSuccess = createAction('NOTES/CREATE_NOTE_SUCCESS');
 export const createNoteError = createAction<Error>('NOTES/CREATE_NOTE_ERROR');
 
 export const deleteNoteRequest = createAction<DeleteNotePayloadType>(
