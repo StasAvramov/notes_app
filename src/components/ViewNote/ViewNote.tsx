@@ -13,16 +13,19 @@ import { NoteType, Nullable } from '../../types/main';
 type UseParamsIdType = { id: string };
 
 const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    justifyContent: 'center',
-  },
   paper: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    height: '500px',
+    width: '450px',
+    marginTop: theme.spacing(8),
     maxWidth: theme.breakpoints.values.sm,
     padding: theme.spacing(2.5),
+  },
+  title: {
+    display: 'block',
+    wordWrap: 'break-word',
   },
 }));
 
@@ -51,16 +54,14 @@ export default function ViewNote() {
       {!note ? (
         <CustomLoader />
       ) : (
-        <Box className={classes.container}>
-          <Paper elevation={3} className={classes.paper}>
-            <Typography component="h1" variant="h3">
-              {note.title}
-            </Typography>
-            <Typography component="p">Category: {note.category}</Typography>
-            <Typography>{note.description}</Typography>
-            <Buttons />
-          </Paper>
-        </Box>
+        <Paper elevation={3} className={classes.paper}>
+          <Typography component="p" variant="h3" className={classes.title}>
+            {note.title}
+          </Typography>
+          <Typography component="p">Category: {note.category}</Typography>
+          <Typography>{note.description}</Typography>
+          <Buttons />
+        </Paper>
       )}
     </>
   );

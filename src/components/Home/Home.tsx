@@ -18,7 +18,6 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     alignItems: 'center',
     flexWrap: 'nowrap',
-    boxShadow: theme.shadows[15],
     paddingTop: theme.spacing(3),
     minHeight: '100vh',
   },
@@ -49,7 +48,7 @@ export default function Home() {
   }, [isAuthenticated, getNotes, isNotesReady]);
 
   return (
-    <>
+    <div className={classes.container}>
       {notes.length > 0 && <Category />}
       {isNotesReady ? <Notes /> : <CustomLoader />}
       <Button
@@ -63,6 +62,6 @@ export default function Home() {
       >
         Add note
       </Button>
-    </>
+    </div>
   );
 }

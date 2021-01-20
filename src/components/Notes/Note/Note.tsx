@@ -12,6 +12,7 @@ import {
   Chip,
   Button,
 } from '@material-ui/core';
+
 import { makeStyles } from '@material-ui/core/styles';
 import { ExpandMore } from '@material-ui/icons';
 
@@ -20,9 +21,9 @@ import { ROUTES } from '../../../constants/routes';
 import { NoteType } from '../../../types/main';
 
 const useStyles = makeStyles(theme => ({
-  card: {
+  note: {
     position: 'relative',
-    boxShadow: theme.shadows[2],
+    boxShadow: theme.shadows[4],
     width: '100%',
     maxWidth: '450px',
     borderRadius: theme.shape.borderRadius,
@@ -32,13 +33,17 @@ const useStyles = makeStyles(theme => ({
       width: '450px',
     },
   },
-  header: {
-    maxWidth: '450px',
+  top: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   category: {
-    position: 'absolute',
-    top: theme.spacing(1),
-    left: theme.spacing(1),
+    marginLeft: theme.spacing(1),
+  },
+  header: {
+    display: 'block',
+    wordWrap: 'break-word',
   },
   description: {
     textAlign: 'start',
@@ -75,29 +80,29 @@ const Note: FC<Props> = ({ note }) => {
   };
 
   return (
-    <Card className={classes.card} component="li">
-      <Chip
-        aria-label="category"
-        label={note.category}
-        color="primary"
-        className={classes.category}
-      />
+    <Card className={classes.note} component="li">
+      <div className={classes.top}>
+        <Chip
+          aria-label="category"
+          label={note.category}
+          color="primary"
+          className={classes.category}
+        />
+        <IconButton
+          className={
+            expanded
+              ? `${classes.expand} ${classes.expandOpen}`
+              : classes.expand
+          }
+          onClick={handleExpandClick}
+          aria-expanded={expanded}
+          aria-label="show more"
+        >
+          <ExpandMore />
+        </IconButton>
+      </div>
       <CardHeader
-        // classes={{content:classes.content}}
-        action={
-          <IconButton
-            className={
-              expanded
-                ? `${classes.expand} ${classes.expandOpen}`
-                : classes.expand
-            }
-            onClick={handleExpandClick}
-            aria-expanded={expanded}
-            aria-label="show more"
-          >
-            <ExpandMore />
-          </IconButton>
-        }
+        className={classes.header}
         title={note.title}
         subheader={
           note.updatedAt

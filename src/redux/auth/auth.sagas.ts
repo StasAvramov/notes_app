@@ -4,6 +4,12 @@ import {
   loginRequest,
   loginSuccess,
   loginError,
+  loginGoogleRequest,
+  loginGoogleSuccess,
+  loginGoogleError,
+  loginGithubRequest,
+  loginGithubError,
+  loginGithubSuccess,
   logoutRequest,
   logoutSuccess,
   logoutError,
@@ -13,28 +19,36 @@ import {
 } from './auth.actions';
 
 import {
+  onFirebaseGitHubLogin,
+  onFirebaseGoogleLogin,
   onFirebaseLogin,
   onFirebaseLogout,
-  onFirebaseRegister,
 } from '../../services/firebase.auth.service';
 
 function* login(action: ReturnType<typeof loginRequest>) {
   try {
-    //Если была создана новая учетная запись,
-    //пользователь входит в систему(ЛОГИНИТСЯ) автоматически
-    const newUser = yield call(onFirebaseRegister, action.payload);
-
-    if (newUser) {
-      console.log('New user created and logged in');
-      return yield put(loginSuccess());
-    }
-    //В противном случае пользователь уже зарегистрирован. просто логиним его
-    console.log('User login');
     yield call(onFirebaseLogin, action.payload);
-
     yield put(loginSuccess());
   } catch (error) {
     yield put(loginError(error));
+  }
+}
+
+function* loginGoogle(action: ReturnType<typeof loginGoogleRequest>) {
+  try {
+    yield call(onFirebaseGoogleLogin);
+    yield put(loginGoogleSuccess());
+  } catch (error) {
+    yield put(loginGoogleError(error));
+  }
+}
+
+function* loginGithub(action: ReturnType<typeof loginGithubRequest>) {
+  try {
+    yield call(onFirebaseGitHubLogin);
+    yield put(loginGithubSuccess());
+  } catch (error) {
+    yield put(loginGithubError(error));
   }
 }
 
@@ -60,5 +74,7 @@ export default function* userSaga() {
     yield takeLatest(loginRequest.type, login),
     yield takeLatest(logoutRequest.type, logout),
     yield takeLatest(getCurrentUserRequest.type, getCurrentUser),
+    yield takeLatest(loginGoogleRequest.type, loginGoogle),
+    yield takeLatest(loginGithubRequest.type, loginGithub),
   ]);
 }

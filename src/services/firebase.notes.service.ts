@@ -39,11 +39,13 @@ export const firestoreEditNote = async (
   noteId: NoteType['id'],
   fieldsToUpdate: UpdateNoteFieldsType,
 ) => {
-  const newFieldsToUpdate = {
-    ...fieldsToUpdate,
-    updatedAt: new Date().toLocaleString(),
-  };
-  return await db.collection('notes').doc(noteId).update(newFieldsToUpdate);
+  return await db
+    .collection('notes')
+    .doc(noteId)
+    .update({
+      ...fieldsToUpdate,
+      updatedAt: new Date().toLocaleString(),
+    });
 };
 
 //DELETE NOTE

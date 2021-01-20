@@ -30,7 +30,7 @@ function* getNotes() {
     const channel = yield call(createNotesChannel, email);
 
     while (true) {
-      const notes = yield take(channel);
+      const notes = yield take(channel); //listen channel and take notes if they're change
       yield put(getNotesSuccess(notes));
     }
   } catch (error) {

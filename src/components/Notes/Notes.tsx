@@ -45,7 +45,7 @@ export default function Notes() {
         sortedNotes.map(note => <Note key={note.id} note={note} />)
       ) : (
         <div>
-          <h1>Add your first note</h1>
+          <h1>Add your first note {category && `in ${category} category`}</h1>
         </div>
       )}
     </Box>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRouteMatch, Link } from 'react-router-dom';
 
-import { Button, Container } from '@material-ui/core';
+import { Box, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { useNotes } from '../../hooks';
@@ -10,9 +10,11 @@ import { ROUTES } from '../../constants/routes';
 const useStyles = makeStyles(theme => ({
   container: {
     display: 'flex',
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-between',
+    width: '100%',
   },
   button: {
+    width: '100px',
     margin: theme.spacing(3, 0, 2),
     padding: theme.spacing(1.5, 2),
   },
@@ -36,7 +38,7 @@ export default function Buttons() {
   };
 
   return (
-    <Container className={classes.container}>
+    <Box className={classes.container}>
       <Button
         component={Link}
         to={ROUTES.home}
@@ -93,6 +95,6 @@ export default function Buttons() {
           </Button>
         </>
       )}
-    </Container>
+    </Box>
   );
 }
