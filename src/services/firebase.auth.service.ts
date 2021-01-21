@@ -12,7 +12,7 @@ export const onFirebaseLogin = async ({ email, password }: UserType) => {
     if (error.code === 'auth/user-not-found') {
       return await auth.createUserWithEmailAndPassword(email, password);
     } else {
-      throw error;
+      return console.error(error);
     }
   }
 };
