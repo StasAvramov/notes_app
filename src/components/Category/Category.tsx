@@ -16,7 +16,6 @@ const useStyles = makeStyles(theme => ({
     maxWidth: '450px',
   },
   select: {
-    marginTop: theme.spacing(2),
     textAlign: 'center',
   },
   link: {
@@ -25,6 +24,7 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
   },
 }));
+
 type UseParamsCategoryType = {
   category: string;
 };

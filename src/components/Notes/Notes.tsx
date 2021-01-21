@@ -39,10 +39,14 @@ export default function Notes() {
 
   return (
     <Box component="ul" className={classes.list}>
-      {sortedNotes ? (
+      {!sortedNotes ? (
+        <CustomLoader />
+      ) : sortedNotes.length > 0 ? (
         sortedNotes.map(note => <Note key={note.id} note={note} />)
       ) : (
-        <CustomLoader />
+        <div>
+          <h1>Add your first note {category && `in ${category} category`}</h1>
+        </div>
       )}
     </Box>
   );

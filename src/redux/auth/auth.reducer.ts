@@ -7,16 +7,23 @@ import {
   getCurrentUserSuccess,
   getCurrentUserError,
   logoutSuccess,
+  // loginGoogleRequest,
+  // loginGoogleSuccess,
+  // loginGoogleError,
+  // loginGithubRequest,
+  // loginGithubError,
+  // loginGithubSuccess,
 } from './auth.actions';
-import { Nullable } from '../../types/main';
-import { UserPayloadType } from '../../types/auth';
 
-const initialUserState = null as Nullable<UserPayloadType>;
+import { Nullable } from '../../types/main';
+import { UserLoginSuccessPayloadType } from '../../types/auth';
+
+const initialUserState = null as Nullable<UserLoginSuccessPayloadType>;
 const initialErrorState = null as any;
 
 const userReducer = createReducer(initialUserState, builder => {
   builder
-    .addCase(loginSuccess, (state, { payload }) => payload)
+    .addCase(loginSuccess, (state, { payload }) => state)
     .addCase(getCurrentUserSuccess, (state, { payload }) => payload)
     .addCase(logoutSuccess, (state, { payload }) => null);
 });

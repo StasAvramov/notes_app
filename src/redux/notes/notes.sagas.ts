@@ -1,4 +1,4 @@
-import { put, takeLatest, all, call } from 'redux-saga/effects';
+import { put, takeLatest, all, call, take, select } from 'redux-saga/effects';
 
 import {
   getNotesRequest,
@@ -16,33 +16,23 @@ import {
 } from './notes.actions';
 
 import {
-  createNote,
-  getNoteToUpdateIndex,
-  updateNote,
-} from '../../services/notes.service';
+  createNotesChannel,
+  firestoreCreateNote,
+  firestoreDeleteNote,
+  firestoreEditNote,
+} from '../../services/firebase.notes.service';
 
-import { DEFAULT_NOTES } from '../../notes';
-import { NoteType } from '../../types/main';
-
-function getNotesFromLocalStorageAsJS(): NoteType[] {
-  const notesAsJson = localStorage.getItem('notes');
-
-  if (!notesAsJson) {
-    localStorage.setItem('notes', JSON.stringify(DEFAULT_NOTES));
-
-    return DEFAULT_NOTES;
-  }
-
-  return JSON.parse(notesAsJson);
-}
+import { RootState } from '../store';
 
 function* getNotes() {
   try {
-    const notes: ReturnType<typeof getNotesFromLocalStorageAsJS> = yield call(
-      getNotesFromLocalStorageAsJS,
-    );
+    const { email } = yield select((state: RootState) => state.auth.user);
+    const channel = yield call(createNotesChannel, email);
 
-    yield put(getNotesSuccess(notes));
+    while (true) {
+      const notes = yield take(channel); //listen channel and take notes if they're change
+      yield put(getNotesSuccess(notes));
+    }
   } catch (error) {
     yield put(getNotesError(error));
   }
@@ -50,19 +40,9 @@ function* getNotes() {
 
 function* addNote(action: ReturnType<typeof createNoteRequest>) {
   try {
-    const notes: ReturnType<typeof getNotesFromLocalStorageAsJS> = yield call(
-      getNotesFromLocalStorageAsJS,
-    );
+    yield call(firestoreCreateNote, action.payload);
 
-    const newNote: ReturnType<typeof createNote> = yield call(
-      createNote,
-      action.payload,
-    );
-
-    notes.push(newNote);
-    localStorage.setItem('notes', JSON.stringify(notes));
-
-    yield put(createNoteSuccess(newNote));
+    yield put(createNoteSuccess());
   } catch (error) {
     yield put(createNoteError(error as Error));
   }
@@ -71,25 +51,9 @@ function* addNote(action: ReturnType<typeof createNoteRequest>) {
 function* editNote(action: ReturnType<typeof editNoteRequest>) {
   try {
     const { id, fieldsToUpdate } = action.payload;
+    yield call(firestoreEditNote, id, fieldsToUpdate);
 
-    const notes: ReturnType<typeof getNotesFromLocalStorageAsJS> = yield call(
-      getNotesFromLocalStorageAsJS,
-    );
-
-    const noteToUpdateIndex: ReturnType<
-      typeof getNoteToUpdateIndex
-    > = yield call(getNoteToUpdateIndex, notes, id);
-
-    yield call(updateNote, notes, noteToUpdateIndex, fieldsToUpdate);
-
-    localStorage.setItem('notes', JSON.stringify(notes));
-
-    yield put(
-      editNoteSuccess({
-        note: notes[noteToUpdateIndex],
-        idx: noteToUpdateIndex,
-      }),
-    );
+    yield put(editNoteSuccess());
   } catch (error) {
     yield put(editNoteError(error));
   }
@@ -97,16 +61,9 @@ function* editNote(action: ReturnType<typeof editNoteRequest>) {
 
 function* deleteNote(action: ReturnType<typeof deleteNoteRequest>) {
   try {
-    const notes: ReturnType<typeof getNotesFromLocalStorageAsJS> = yield call(
-      getNotesFromLocalStorageAsJS,
-    );
+    yield call(firestoreDeleteNote, action.payload.id);
 
-    const newNotes: NoteType[] = notes.filter(
-      note => note.id !== action.payload.id,
-    );
-    localStorage.setItem('notes', JSON.stringify(newNotes));
-
-    yield put(deleteNoteSuccess(action.payload));
+    yield put(deleteNoteSuccess());
   } catch (error) {
     yield put(deleteNoteError(error));
   }

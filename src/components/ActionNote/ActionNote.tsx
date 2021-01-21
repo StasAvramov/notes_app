@@ -14,7 +14,6 @@ import { NoteType, Nullable } from '../../types/main';
 
 const useStyles = makeStyles(theme => ({
   wrapper: {
-    height: '100%',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',

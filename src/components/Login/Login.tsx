@@ -4,6 +4,7 @@ import { useFormik } from 'formik';
 
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { Avatar, Button, TextField, Typography, Box } from '@material-ui/core';
+import GitHubIcon from '@material-ui/icons/GitHub';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { useAuth } from '../../hooks';
@@ -11,12 +12,12 @@ import { useAuth } from '../../hooks';
 import YUP_SCHEMA from './yup.schema';
 
 const useStyles = makeStyles(theme => ({
-  paper: {
-    height: '100%',
+  container: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
+    minHeight: '100%',
     maxWidth: theme.breakpoints.values.sm,
   },
   avatar: {
@@ -24,18 +25,17 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
+    // width: '100%', // Fix IE 11 issue.
   },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
+  button: {
+    margin: theme.spacing(2, 0, 1),
     padding: theme.spacing(1.5, 2),
   },
 }));
 
 export default function Login() {
   const classes = useStyles();
-  const { onLogin } = useAuth();
+  const { onLogin, onGoogleLogin, onGithubLogin } = useAuth();
 
   const formik = useFormik({
     initialValues: {
@@ -44,12 +44,12 @@ export default function Login() {
     },
     validationSchema: YUP_SCHEMA,
     onSubmit: values => {
-      onLogin({ email: values.email });
+      onLogin(values);
     },
   });
 
   return (
-    <Box className={classes.paper}>
+    <Box className={classes.container}>
       <Avatar className={classes.avatar}>
         <LockOutlinedIcon />
       </Avatar>
@@ -65,7 +65,6 @@ export default function Login() {
           margin="normal"
           fullWidth
           autoComplete="true"
-          autoFocus
           error={formik.touched.email && !!formik.errors.email}
           helperText={formik.errors.email}
           {...formik.getFieldProps('email')}
@@ -89,11 +88,32 @@ export default function Login() {
           fullWidth
           variant="contained"
           color="primary"
-          className={classes.submit}
+          className={classes.button}
         >
           Sign In
         </Button>
       </form>
+      <Button
+        type="button"
+        fullWidth
+        variant="contained"
+        color="secondary"
+        className={classes.button}
+        onClick={onGoogleLogin}
+      >
+        Sign In with GooooooGLE
+      </Button>
+      <Button
+        type="button"
+        fullWidth
+        variant="contained"
+        color="default"
+        className={classes.button}
+        startIcon={<GitHubIcon />}
+        onClick={onGithubLogin}
+      >
+        Sign In with GitHub
+      </Button>
     </Box>
   );
 }

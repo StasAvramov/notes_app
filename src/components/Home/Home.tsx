@@ -18,7 +18,6 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     alignItems: 'center',
     flexWrap: 'nowrap',
-    boxShadow: theme.shadows[15],
     paddingTop: theme.spacing(3),
     minHeight: '100vh',
   },
@@ -40,7 +39,7 @@ const useStyles = makeStyles(theme => ({
 export default function Home() {
   const classes = useStyles();
   const { isAuthenticated } = useAuth();
-  const { isNotesReady, getNotes } = useNotes();
+  const { isNotesReady, getNotes, notes } = useNotes();
 
   useEffect(() => {
     if (isAuthenticated && !isNotesReady) {
@@ -49,8 +48,8 @@ export default function Home() {
   }, [isAuthenticated, getNotes, isNotesReady]);
 
   return (
-    <>
-      <Category />
+    <div className={classes.container}>
+      {notes.length > 0 && <Category />}
       {isNotesReady ? <Notes /> : <CustomLoader />}
       <Button
         component={Link}
@@ -63,6 +62,6 @@ export default function Home() {
       >
         Add note
       </Button>
-    </>
+    </div>
   );
 }

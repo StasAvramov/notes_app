@@ -4,6 +4,8 @@ import {
   loginRequest,
   logoutRequest,
   getCurrentUserRequest,
+  loginGoogleRequest,
+  loginGithubRequest,
 } from '../redux/auth/auth.actions';
 
 import { RootState } from '../redux/store';
@@ -16,10 +18,16 @@ export default function useAuth() {
     (state: RootState) => state.auth,
   );
 
-  const getCurrentUser = useCallback(() => dispatch(getCurrentUserRequest()), [
-    dispatch,
-  ]);
+  const getCurrentUser = useCallback(
+    user => dispatch(getCurrentUserRequest(user)),
+    [dispatch],
+  );
+
   const onLogin = (params: UserPayloadType) => dispatch(loginRequest(params));
+
+  const onGoogleLogin = () => dispatch(loginGoogleRequest());
+
+  const onGithubLogin = () => dispatch(loginGithubRequest());
 
   const onLogout = useCallback(() => dispatch(logoutRequest()), [dispatch]);
 
@@ -29,6 +37,8 @@ export default function useAuth() {
     isAuthReady,
     getCurrentUser,
     onLogin,
+    onGoogleLogin,
+    onGithubLogin,
     onLogout,
     user: user || { email: '' },
   };
