@@ -1,0 +1,36 @@
+@import './src/styles/mixins';
+@import './src/styles/variables';
+
+.Header {
+  position: sticky;
+  margin: 0 auto;
+  background-color: $colorBlue;
+  width: 100%;
+
+  @include breakpoint-up(medium) {
+    max-width: 960px;
+  }
+
+  &__toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 40px;
+    margin-left: 20px;
+    margin-right: 20px;
+
+    @include breakpoint-up(tablet) {
+      height: 50px;
+    }
+
+    @include breakpoint-up(medium) {
+      height: 60px;
+    }
+
+    & a {
+      display: block;
+
+      color: #fff;
+    }
+  }
+}

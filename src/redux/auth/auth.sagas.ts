@@ -34,7 +34,7 @@ function* login(action: ReturnType<typeof loginRequest>) {
   }
 }
 
-function* loginGoogle(action: ReturnType<typeof loginGoogleRequest>) {
+function* loginGoogle() {
   try {
     yield call(onFirebaseGoogleLogin);
     yield put(loginGoogleSuccess());
@@ -43,7 +43,7 @@ function* loginGoogle(action: ReturnType<typeof loginGoogleRequest>) {
   }
 }
 
-function* loginGithub(action: ReturnType<typeof loginGithubRequest>) {
+function* loginGithub() {
   try {
     yield call(onFirebaseGitHubLogin);
     yield put(loginGithubSuccess());

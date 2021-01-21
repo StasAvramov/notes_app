@@ -3,7 +3,6 @@ import { useHistory, useParams } from 'react-router-dom';
 import { useFormik } from 'formik';
 
 import { MenuItem, TextField, Typography, Box } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 
 import { Buttons } from '../index';
 
@@ -11,19 +10,7 @@ import { useNotes, useAuth } from '../../hooks';
 import { ROUTES } from '../../constants/routes';
 import { CATEGORIES } from '../../constants/categories';
 import { NoteType, Nullable } from '../../types/main';
-
-const useStyles = makeStyles(theme => ({
-  wrapper: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    maxWidth: theme.breakpoints.values.sm,
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-}));
+import './action_note.scss';
 
 type FormikValuesType = Pick<NoteType, 'category' | 'title' | 'description'>;
 type UseParamsIdType = {
@@ -31,7 +18,6 @@ type UseParamsIdType = {
 };
 
 export default function AddNote() {
-  const classes = useStyles();
   const history = useHistory();
   const { id } = useParams<UseParamsIdType>();
   const { user } = useAuth();
@@ -91,11 +77,11 @@ export default function AddNote() {
   });
 
   return (
-    <Box className={classes.wrapper}>
+    <Box className="wrapper">
       <Typography component="h1" variant="h5">
         {id ? 'Edit note' : 'Add note'}
       </Typography>
-      <form className={classes.form} onSubmit={formik.handleSubmit}>
+      <form className="form" onSubmit={formik.handleSubmit}>
         <TextField
           id="title"
           type="text"

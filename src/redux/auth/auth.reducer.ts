@@ -1,7 +1,7 @@
 import { combineReducers, createReducer } from '@reduxjs/toolkit';
 import {
   // loginRequest,
-  loginSuccess,
+  // loginSuccess,
   loginError,
   // getCurrentUserRequest,
   getCurrentUserSuccess,
@@ -23,16 +23,16 @@ const initialErrorState = null as any;
 
 const userReducer = createReducer(initialUserState, builder => {
   builder
-    .addCase(loginSuccess, (state, { payload }) => state)
+    // .addCase(loginSuccess, (state, { payload }) => state)
     .addCase(getCurrentUserSuccess, (state, { payload }) => payload)
     .addCase(logoutSuccess, (state, { payload }) => null);
 });
 
 const isAuthReady = createReducer(false, builder => {
   builder
-    .addCase(loginSuccess, (state, { payload }) => true)
+    // .addCase(loginSuccess, (state, { payload }) => true)
     .addCase(getCurrentUserSuccess, (state, { payload }) => true)
-    .addCase(loginError, (state, { payload }) => true)
+    // .addCase(loginError, (state, { payload }) => true)
     .addCase(getCurrentUserError, (state, { payload }) => true)
     .addCase(logoutSuccess, (state, { payload }) => false);
 });

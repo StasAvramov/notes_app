@@ -6,37 +6,11 @@ import { useAuth } from './hooks';
 import { Login, Header, Home, ActionNote, ViewNote } from './components';
 import { PrivateRoute, PublicRoute } from './components/common';
 
-import { Container } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-
 import { ROUTES } from './constants/routes';
 import { onFirebaseAuthStateChange } from './services/firebase.auth.service';
-
-const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    justifyContent: 'center',
-    flexWrap: 'nowrap',
-    minHeight: '100vh',
-    backgroundColor: '#ffffff',
-  },
-  // button: {
-  //   position: 'fixed',
-  //   bottom: theme.spacing(0),
-  //   width: '100%',
-  //   maxWidth: theme.breakpoints.values.md,
-  //   margin: theme.spacing(0, 'auto'),
-  //   borderRadius: theme.spacing(0),
-  //   padding: theme.spacing(2, 4.75),
-  //   [theme.breakpoints.up('md')]: {
-  //     position: 'static',
-  //     maxWidth: '450px',
-  //   },
-  // },
-}));
+import './app.scss';
 
 export default function App() {
-  const classes = useStyles();
   const { getCurrentUser } = useAuth();
   const location = useLocation();
   const isLoginPage = location.pathname === ROUTES.login;
@@ -51,7 +25,7 @@ export default function App() {
   return (
     <>
       {!isLoginPage && <Header />}
-      <Container maxWidth="md" className={classes.container} component={'main'}>
+      <main className="App">
         <Switch>
           <PublicRoute
             exact
@@ -80,7 +54,7 @@ export default function App() {
           />
           <Redirect to={ROUTES.home} />
         </Switch>
-      </Container>
+      </main>
     </>
   );
 }

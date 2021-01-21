@@ -1,0 +1,41 @@
+//note: {
+//  position: 'relative',
+//  boxShadow: theme.shadows[4],
+//  width: '100%',
+//  maxWidth: '450px',
+//  borderRadius: theme.shape.borderRadius,
+//  marginBottom: theme.spacing(2),
+//  textAlign: 'center',
+//  [theme.breakpoints.up('sm')]: {
+//  width: '450px',
+//},
+//},
+//top: {
+//  display: 'flex',
+//  alignItems: 'center',
+//  justifyContent: 'space-between',
+//},
+//category: {
+//  marginLeft: theme.spacing(1),
+//},
+//header: {
+//  display: 'block',
+//  wordWrap: 'break-word',
+//},
+//description: {
+//  textAlign: 'start',
+//  textIndent: '1rem',
+//},
+//expand: {
+//  transform: 'rotate(0deg)',
+//  marginLeft: 'auto',
+//  transition: theme.transitions.create('transform', {
+//  duration: theme.transitions.duration.short,
+//  }),
+//},
+//expandOpen: {
+//  transform: 'rotate(180deg)',
+//},
+//actions: {
+//  justifyContent: 'space-evenly',
+//},
