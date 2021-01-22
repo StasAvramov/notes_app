@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { useFormik } from 'formik';
 
-import { MenuItem, TextField, Typography, Box } from '@material-ui/core';
-
 import { Buttons } from '../index';
 
 import { useNotes, useAuth } from '../../hooks';
@@ -77,51 +75,39 @@ export default function AddNote() {
   });
 
   return (
-    <Box className="wrapper">
-      <Typography component="h1" variant="h5">
-        {id ? 'Edit note' : 'Add note'}
-      </Typography>
-      <form className="form" onSubmit={formik.handleSubmit}>
-        <TextField
+    <div className="Action">
+      <h1>{id ? 'Edit note' : 'Add note'}</h1>
+      <form className="Action__form" onSubmit={formik.handleSubmit}>
+        <input
+          className="title"
           id="title"
           type="text"
-          label="Title"
-          variant="outlined"
-          margin="normal"
-          fullWidth
+          placeholder="Enter note title"
           required
           {...formik.getFieldProps('title')}
         />
 
-        <TextField
+        <select
+          className="category"
           id="category"
-          select
-          fullWidth
-          label="Category"
           required
           {...formik.getFieldProps('category')}
         >
           {CATEGORIES.map(category => (
-            <MenuItem key={category} value={category}>
+            <option key={category} value={category}>
               {category}
-            </MenuItem>
+            </option>
           ))}
-        </TextField>
-        <TextField
+        </select>
+        <textarea
+          className="description"
+          placeholder="Enter note description"
           id="description"
-          type="text"
-          label="Description"
-          variant="outlined"
-          margin="normal"
-          multiline
-          rowsMax={20000}
-          fullWidth
-          autoComplete="true"
           required
           {...formik.getFieldProps('description')}
         />
         <Buttons />
       </form>
-    </Box>
+    </div>
   );
 }

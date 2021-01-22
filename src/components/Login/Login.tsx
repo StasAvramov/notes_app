@@ -1,7 +1,8 @@
 import React from 'react';
 
 import { useFormik } from 'formik';
-
+import { CustomInput } from '../common/CustomInput';
+import { CustomButton } from '../common/CustomButton';
 import { useAuth } from '../../hooks';
 
 import YUP_SCHEMA from './yup.schema';
@@ -24,39 +25,32 @@ export default function Login() {
   return (
     <div className="Login">
       <h1 className="Login__title">Sign in/ Sign up</h1>
-      <form className="Login__form" onSubmit={formik.handleSubmit}>
-        <input
+      <form className="Login__form mb15" onSubmit={formik.handleSubmit}>
+        <CustomInput
           id="email"
           type="email"
-          placeholder="Enter your email"
-          autoComplete="true"
           {...formik.getFieldProps('email')}
         />
         {formik.touched.email && !!formik.errors.email && (
           <p className="error">{formik.errors.email}</p>
         )}
-        <input
+        <CustomInput
           id="password"
           type="password"
-          placeholder="Enter your password"
           autoComplete="true"
           {...formik.getFieldProps('password')}
         />
         {formik.touched.password && !!formik.errors.password && (
           <p className="error">{formik.errors.password}</p>
         )}
-        <button type="submit">Sign In</button>
+        <CustomButton type="submit">Sign In</CustomButton>
       </form>
-      <button
-        type="button"
-        className="Login__button mb15"
-        onClick={onGoogleLogin}
-      >
-        Sign In with GooooooGLE
-      </button>
-      <button type="button" className="Login__button" onClick={onGithubLogin}>
+      <CustomButton type="button" onClick={onGoogleLogin}>
+        Sign In with Google
+      </CustomButton>
+      <CustomButton type="button" onClick={onGithubLogin}>
         Sign In with GitHub
-      </button>
+      </CustomButton>
     </div>
   );
 }

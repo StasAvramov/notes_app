@@ -1,9 +1,39 @@
-wrapper {
+.Action {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-form {
-  width: 100%;
-  margintop: 8px;
+  padding-top: 20px;
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 450px;
+    margin-top: 8px;
+
+    & .title {
+      width: 100%;
+      height: 40px;
+      line-height: 20px;
+      margin-bottom: 1rem;
+      outline: none;
+    }
+
+    & .category {
+      width: 50%;
+      height: 40px;
+      line-height: 20px;
+      margin-bottom: 1rem;
+      outline: none;
+    }
+
+    & .description {
+      width: 100%;
+      height: 100px;
+      line-height: 20px;
+      margin-bottom: 1rem;
+      outline: none;
+    }
+  }
 }

@@ -1,14 +1,29 @@
-//paper: {
-//  display: 'flex',
-//  flexDirection: 'column',
-//  alignItems: 'center',
-//  height: '500px',
-//  width: '450px',
-//  marginTop: theme.spacing(8),
-//  maxWidth: theme.breakpoints.values.sm,
-//  padding: theme.spacing(2.5),
-//},
-//title: {
-//  display: 'block',
-//  wordWrap: 'break-word',
-//},
+@import './src/styles/mixins';
+
+.Viewnote {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 15px 0;
+  height: auto;
+  width: 100%;
+  max-width: 450px;
+  margin: 0 auto;
+  @include boxShadow;
+
+  &__title {
+    display: block;
+    font-weight: bold;
+    word-wrap: break-word;
+    margin-bottom: 15px;
+  }
+
+  &__category {
+    margin-bottom: 15px;
+    font-weight: bold;
+  }
+
+  &__description {
+    margin-bottom: 15px;
+  }
+}

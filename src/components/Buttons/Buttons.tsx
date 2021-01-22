@@ -1,10 +1,9 @@
 import React from 'react';
 import { useRouteMatch, Link } from 'react-router-dom';
 
-import { Box, Button } from '@material-ui/core';
-
 import { useNotes } from '../../hooks';
 import { ROUTES } from '../../constants/routes';
+import './buttons.scss';
 
 type UseParamsIdType = {
   id: string;
@@ -23,63 +22,36 @@ export default function Buttons() {
   };
 
   return (
-    <Box /*className=container*/>
-      <Button
-        component={Link}
-        to={ROUTES.home}
-        type="button"
-        variant="contained"
-        color="primary"
-        // className={button}
-      >
-        {IS_ADD_VIEW || IS_EDIT_VIEW ? 'Cancel' : 'Back'}
-      </Button>
+    <div className="Buttons">
+      <button type="button" className="Buttons__button">
+        <Link to={ROUTES.home}>
+          {IS_ADD_VIEW || IS_EDIT_VIEW ? 'Cancel' : 'Back'}
+        </Link>
+      </button>
 
       {IS_ADD_VIEW && (
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          // className={classes.button}
-        >
+        <button type="submit" className="Buttons__button">
           Add note
-        </Button>
+        </button>
       )}
 
       {!IS_ADD_VIEW && (
         <>
           {IS_EDIT_VIEW ? (
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              // className={classes.button}
-            >
+            <button type="submit" className="Buttons__button">
               Save
-            </Button>
+            </button>
           ) : (
-            <Button
-              component={Link}
-              to={ROUTES.dynamic.edit(NOTE_ID)}
-              type="submit"
-              variant="contained"
-              color="primary"
-              // className={classes.button}
-            >
-              Edit
-            </Button>
+            <button type="submit" className="Buttons__button">
+              <Link to={ROUTES.dynamic.edit(NOTE_ID)}>Edit</Link>
+            </button>
           )}
 
-          <Button
-            variant="contained"
-            color="secondary"
-            // className={classes.button}
-            onClick={handleClick}
-          >
+          <button className="Buttons__button delete" onClick={handleClick}>
             Delete
-          </Button>
+          </button>
         </>
       )}
-    </Box>
+    </div>
   );
 }

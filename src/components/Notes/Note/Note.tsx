@@ -1,23 +1,10 @@
 import React, { useState, FC } from 'react';
 import { Link } from 'react-router-dom';
 
-import {
-  Collapse,
-  CardHeader,
-  IconButton,
-  Card,
-  CardActions,
-  CardContent,
-  Typography,
-  Chip,
-  Button,
-} from '@material-ui/core';
-
-import { ExpandMore } from '@material-ui/icons';
-
 import { useNotes } from '../../../hooks';
 import { ROUTES } from '../../../constants/routes';
 import { NoteType } from '../../../types/main';
+import './note.scss';
 
 type Props = { note: NoteType };
 
@@ -34,83 +21,48 @@ const Note: FC<Props> = ({ note }) => {
   };
 
   return (
-    <Card
-      // className={classes.note}
-      component="li"
-    >
-      <div
-      // className={classes.top}
-      >
-        <Chip
-          aria-label="category"
-          label={note.category}
-          color="primary"
-          // className={classes.category}
-        />
-        <IconButton
-          // className={
-          //   expanded
-          //     ? `${classes.expand} ${classes.expandOpen}`
-          //     : classes.expand
-          // }
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <ExpandMore />
-        </IconButton>
+    <div className="Note">
+      <div className="Note__top">
+        <div className="Note__expand">
+          <div className="chip">{note.category}</div>
+          <button
+            // className={
+            //     expanded
+            //       ? `${classes.expand} ${classes.expandOpen}`
+            //       : classes.expand}
+            onClick={handleExpandClick}
+            //   aria-expanded={expanded}
+            //   aria-label="show more"
+          >
+            {!expanded ? 'Show' : 'Hide'}
+          </button>
+        </div>
+        <div className="Note__header">
+          <p className="title">Title: {note.title}</p>
+          <p>
+            {note.updatedAt
+              ? `Updated: ${note.updatedAt}`
+              : `Created: ${note.createdAt}`}
+          </p>
+        </div>
       </div>
-      <CardHeader
-        // className={classes.header}
-        title={note.title}
-        subheader={
-          note.updatedAt
-            ? `Updated: ${note.updatedAt}`
-            : `Created: ${note.createdAt}`
-        }
-      />
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>
-          <Typography
-          // className={classes.description}
-          >
-            {note.description}
-          </Typography>
-        </CardContent>
-
-        <CardActions
-          disableSpacing
-          // className={classes.actions}
-        >
-          <Button
-            component={Link}
-            variant="contained"
-            color="primary"
-            size="large"
-            to={ROUTES.dynamic.edit(note.id)}
-          >
-            Edit
-          </Button>
-          <Button
-            component={Link}
-            variant="contained"
-            color="primary"
-            size="large"
-            to={ROUTES.dynamic.details(note.id)}
-          >
-            View
-          </Button>
-          <Button
-            onClick={handleDeleteNoteClick}
-            variant="contained"
-            color="secondary"
-            size="large"
-          >
-            Delete
-          </Button>
-        </CardActions>
-      </Collapse>
-    </Card>
+      {expanded && (
+        <div className="Note__content">
+          <p className="description">{note.description}</p>
+          <div className="buttons">
+            <button>
+              <Link to={ROUTES.dynamic.edit(note.id)}>Edit</Link>
+            </button>
+            <button>
+              <Link to={ROUTES.dynamic.details(note.id)}>View</Link>
+            </button>
+            <button className="delete" onClick={handleDeleteNoteClick}>
+              Delete
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 

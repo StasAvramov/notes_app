@@ -1,12 +1,8 @@
-// Breakpoints
-@media (min-width: 64em) {
-  // styles go here
-}
+@import './src/styles/variables';
 
 // 600px, 1024px
 $breakpoints-up: (
   'tablet': '600px',
-  'medium': '960px',
   'desktop': '1024px',
 );
 
@@ -16,15 +12,15 @@ $breakpoints-up: (
   }
 }
 
-// 639px, 1023px
-$breakpoints-down: (
-  'mobile': '599px',
-  'medium': '959px',
-  'tablet': '1023px',
-);
+@mixin bgBlue {
+  background-color: $colorBlue;
+}
 
-@mixin breakpoint-down($size) {
-  @media (max-width: map-get($breakpoints-down, $size)) {
-    @content;
-  }
+@mixin bgRed {
+  background-color: $colorRed;
+}
+
+@mixin boxShadow {
+  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),
+    0px 5px 8px 0px rgba(0, 0, 0, 0.14), 0px 1px 14px 0px rgba(0, 0, 0, 0.12);
 }

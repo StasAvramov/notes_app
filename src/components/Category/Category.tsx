@@ -1,63 +1,73 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-
-import { InputLabel, Select, FormControl, MenuItem } from '@material-ui/core';
 
 import { CATEGORIES } from '../../constants/categories';
 import { ROUTES } from '../../constants/routes';
 import { CategoryType } from '../../types/main';
 import { capitalize } from '../../services/notes.service';
+import './category.scss';
 
 type UseParamsCategoryType = {
   category: string;
 };
 
 export default function Category() {
-  const [categorySelect, setCategorySelect] = useState<CategoryType>('');
+  const [selectedCategory, setSelectedCategory] = useState<CategoryType>('');
+  const [isListOpen, setIsListOpen] = useState(false);
 
-  const handleChange = (event: ChangeEvent<{ value: unknown }>): void => {
-    setCategorySelect(event.target.value as CategoryType);
-  };
   const { category } = useParams<UseParamsCategoryType>();
+
+  const handleToggleList = () => {
+    setIsListOpen(!isListOpen);
+  };
+
+  const handleCategorySelect = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ): void => {
+    setIsListOpen(false);
+  };
 
   useEffect(() => {
     if (category && CATEGORIES.includes(capitalize(category))) {
-      setCategorySelect(capitalize(category));
+      setSelectedCategory(capitalize(category));
     }
-  }, [category, setCategorySelect]);
+  }, [category, setSelectedCategory]);
 
   return (
-    <FormControl /*className={classes.formControl}*/>
-      <InputLabel shrink id="select-label">
-        Category
-      </InputLabel>
-      <Select
-        labelId="select-label"
-        id="category"
-        value={categorySelect}
-        onChange={handleChange}
-        displayEmpty
-        /*className={classes.select}*/
+    <div className="Category">
+      <button
+        type="button"
+        className="Category__header"
+        onClick={handleToggleList}
       >
-        <MenuItem value="">
-          <Link
-            to={ROUTES.home}
-            // className={classes.link}
+        <div>{category ? capitalize(category) : 'Please select category'}</div>
+      </button>
+      {isListOpen && (
+        <div role="list" className="List">
+          <button
+            type="button"
+            className="List__button"
+            key="all"
+            value="All"
+            onClick={handleCategorySelect}
           >
-            All
-          </Link>
-        </MenuItem>
-        {CATEGORIES.map(category => (
-          <MenuItem value={category} key={category}>
-            <Link
-              /*className={classes.link}*/
-              to={ROUTES.dynamic.category(category.toLowerCase())}
+            <Link to={ROUTES.home}>All</Link>
+          </button>
+          {CATEGORIES.map(category => (
+            <button
+              type="button"
+              className="List__button"
+              key={category}
+              value={category}
+              onClick={handleCategorySelect}
             >
-              {category}
-            </Link>
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
+              <Link to={ROUTES.dynamic.category(category.toLowerCase())}>
+                {category}
+              </Link>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }

@@ -1,15 +1,13 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-import AddIcon from '@material-ui/icons/Add';
-import { Button } from '@material-ui/core';
-
 import Category from '../Category';
 import { CustomLoader } from '../common';
 import Notes from '../Notes';
 
 import { ROUTES } from '../../constants/routes';
 import { useAuth, useNotes } from '../../hooks';
+import './home.scss';
 
 export default function Home() {
   const { isAuthenticated } = useAuth();
@@ -22,22 +20,12 @@ export default function Home() {
   }, [isAuthenticated, getNotes, isNotesReady]);
 
   return (
-    <div
-    // className=container
-    >
+    <div className="Home">
       {notes.length > 0 && <Category />}
       {isNotesReady ? <Notes /> : <CustomLoader />}
-      <Button
-        component={Link}
-        to={ROUTES.add}
-        variant="contained"
-        color="primary"
-        size="large"
-        // className={classes.button}
-        startIcon={<AddIcon fontSize="large" />}
-      >
-        Add note
-      </Button>
+      <button className="Home__button">
+        <Link to={ROUTES.add}>Add note</Link>
+      </button>
     </div>
   );
 }

@@ -1,12 +1,11 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
-import { Box } from '@material-ui/core';
-
 import Note from './Note';
 import { CustomLoader } from '../common';
 
 import { useNotes } from '../../hooks';
+import './notes.scss';
 
 type UseParamsCategoryType = {
   category: string;
@@ -19,10 +18,7 @@ export default function Notes() {
   let sortedNotes = getSortedNotes(category);
 
   return (
-    <Box
-      component="ul"
-      // className={classes.list}
-    >
+    <ul className="Notes">
       {!sortedNotes ? (
         <CustomLoader />
       ) : sortedNotes.length > 0 ? (
@@ -32,6 +28,6 @@ export default function Notes() {
           <h1>Add your first note {category && `in ${category} category`}</h1>
         </div>
       )}
-    </Box>
+    </ul>
   );
 }
