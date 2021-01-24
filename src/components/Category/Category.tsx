@@ -40,34 +40,32 @@ export default function Category() {
         className="Category__header"
         onClick={handleToggleList}
       >
-        <div>{category ? capitalize(category) : 'Please select category'}</div>
+        <p>{category ? capitalize(category) : 'Please select category'}</p>
       </button>
-      {isListOpen && (
-        <div role="list" className="List">
+      <div role="list" className={isListOpen ? 'List List__open' : 'List'}>
+        <button
+          type="button"
+          className="List__button"
+          key="all"
+          value="All"
+          onClick={handleCategorySelect}
+        >
+          <Link to={ROUTES.home}>All</Link>
+        </button>
+        {CATEGORIES.map(category => (
           <button
             type="button"
             className="List__button"
-            key="all"
-            value="All"
+            key={category}
+            value={category}
             onClick={handleCategorySelect}
           >
-            <Link to={ROUTES.home}>All</Link>
+            <Link to={ROUTES.dynamic.category(category.toLowerCase())}>
+              {category}
+            </Link>
           </button>
-          {CATEGORIES.map(category => (
-            <button
-              type="button"
-              className="List__button"
-              key={category}
-              value={category}
-              onClick={handleCategorySelect}
-            >
-              <Link to={ROUTES.dynamic.category(category.toLowerCase())}>
-                {category}
-              </Link>
-            </button>
-          ))}
-        </div>
-      )}
+        ))}
+      </div>
     </div>
   );
 }

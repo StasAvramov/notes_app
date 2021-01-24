@@ -6,6 +6,7 @@
   width: 100%;
   max-width: 420px;
   position: relative;
+  margin-bottom: 20px;
 
   &__header {
     width: 100%;
@@ -14,9 +15,6 @@
     margin-bottom: 0.25rem;
     border: none;
     padding: 0.75rem;
-
-    & div {
-    }
   }
 }
 
@@ -24,8 +22,22 @@
   display: flex;
   flex-direction: column;
   position: absolute;
-  top: 80px;
+  top: 65px;
   width: 100%;
+  overflow: hidden;
+  height: 0px;
+  background-color: #ffffff;
+  transition: height 0.25s ease-in-out 0.25s;
+  @include breakpoint-up(tablet) {
+    top: 80px;
+  }
+
+  &__open {
+    height: 205px;
+    @include breakpoint-up(tablet) {
+      height: 290px;
+    }
+  }
 
   &__button {
     width: 100%;
